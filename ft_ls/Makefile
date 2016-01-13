@@ -6,16 +6,20 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/20 14:17:44 by vtarreau          #+#    #+#              #
-#    Updated: 2016/01/13 11:46:37 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/01/13 16:26:43 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = ft_ls
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra -g
+CFLAGS = -Werror -Wall -Wextra
 
 SRC_PATH = ./srcs/
 SRC_NAME = 	main.c \
+			compute.c \
+			lst_util.c \
+			parse.c \
+			tools.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
