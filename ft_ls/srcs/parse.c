@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:41 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 16:47:59 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/13 18:02:38 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int			parse(t_env *env, int size, char **args)
 			parse_arg(env, args[i] + 1);
 	}
 	if (env->paths == NULL)
-	{
 		ft_addpath(env, ".");
-	}
 	return (TRUE);
 }

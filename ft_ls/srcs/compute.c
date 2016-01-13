@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:16 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 17:15:26 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/13 18:04:11 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void		show_dir(t_env *env, t_path *path)
 		ft_putendl(tmp->name);
 		tmp = tmp->next;
 	}
+	ft_putchar('\n');
 }
 
 void		show_dirs(t_env *env)
@@ -77,12 +78,8 @@ void		show_dirs(t_env *env)
 	tmp = env->paths;
 	while (tmp != NULL)
 	{
-		if (tmp->next != NULL)
-		{
-			ft_putchar('\n');
-			ft_putstr(tmp->name);
-			ft_putendl(" :");
-		}
+		ft_putstr(tmp->name);
+		ft_putendl(" :");
 		show_dir(env, tmp);
 		tmp = tmp->next;
 	}
