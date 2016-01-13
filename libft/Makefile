@@ -6,14 +6,16 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/11 16:14:33 by vtarreau          #+#    #+#              #
-#    Updated: 2015/03/30 14:59:01 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/01/13 17:13:29 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = libft.a
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
-SRC.C = ft_atoi.c \
+
+SRC_PATH = ./srcs/
+SRC_NAME = ft_atoi.c \
 		ft_bzero.c \
 		ft_isalnum.c \
 		ft_isalpha.c \
@@ -93,26 +95,31 @@ SRC.C = ft_atoi.c \
 		ft_string_position.c \
 		ft_replace_str_in_tab.c \
 		ft_del_tab_str.c \
-		ft_tabception.c 
-SRC.O = $(SRC.C:.c=.o)
+		ft_tabception.c
+
+OBJ_NAME = $(SRC_NAME:.c=.o)
+OBJ_PATH = ./obj/
 
 INCL = ./includes/libft.h
 
+SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
+
 all:		$(NAME)
 
-$(NAME):	$(SRC.O)
-			ar rc $(NAME) $(SRC.O)
+$(NAME):	$(OBJ)
+			ar rc $(NAME) $(OBJ)
 			ranlib $(NAME)
 
 clean:		
-			/bin/rm -f $(SRC.O)
+			/bin/rm -f $(OBJ)
 
 fclean:		clean
 			/bin/rm -f $(NAME)
 
 re:			fclean all
 
-%.o: %.c $(INCL)
-	$(CC) $(FLAGS) -I ./includes/ -c $<
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INCL)
+	$(CC) $(FLAGS) -I ./includes/ -o $@ -c $<
 
 .PHONY: all clean fclean re
