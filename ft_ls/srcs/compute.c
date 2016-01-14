@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:16 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 18:04:11 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/14 18:03:27 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,22 @@ void		compute_dir(t_env *env, t_path *path)
 
 	if ((dir = opendir(path->name)) == NULL)
 	{
-		perror("ERROR");
+		perror(path->name);
 		return ;
 	}
 	path->files = NULL;
 	while ((tmp = readdir(dir)) != NULL)
 	{
 		if (env->recursive && tmp->d_type == DT_DIR)
-			if (!ft_is_hidden(env, tmp->d_name))
+			if (!ft_is_hidden(env, tmp->d_name) && !ft_is_dot_dotdot(env, tmp->d_type, tmp->d_name))
 				ft_addpath(env, ft_strjoins(path->name, "/", tmp->d_name));
 		ft_addfile(path, tmp);
 	}
+	dprintf(1,"-- %s --\n", path->name);
+	path->files = ft_sort_ascii(path->files);
+	//show_dir(env, path);
 	closedir(dir);
+	//show_dirs(env);
 }
 
 void		compute_dirs(t_env *env)
@@ -65,7 +69,8 @@ void		show_dir(t_env *env, t_path *path)
 	tmp = path->files;
 	while (tmp != NULL)
 	{
-		ft_putendl(tmp->name);
+		if (!ft_is_hidden(env, tmp->name))
+			ft_putendl(tmp->name);
 		tmp = tmp->next;
 	}
 	ft_putchar('\n');
@@ -78,9 +83,15 @@ void		show_dirs(t_env *env)
 	tmp = env->paths;
 	while (tmp != NULL)
 	{
-		ft_putstr(tmp->name);
-		ft_putendl(" :");
-		show_dir(env, tmp);
+		if (tmp->files != NULL)
+		{
+			ft_putstr(tmp->name);
+			ft_putendl(" :");
+		}
+		if (ft_strcmp(tmp->name, ".") == 0 || !ft_is_hidden(env, tmp->name))
+		{
+			show_dir(env, tmp);
+		}
 		tmp = tmp->next;
 	}
 }

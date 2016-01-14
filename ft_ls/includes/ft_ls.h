@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 16:26:25 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/14 17:46:14 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <stdio.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -24,7 +25,6 @@
 typedef struct		s_path
 {
 	char			*name;
-	int				type;
 	struct s_path	*next;
 	struct s_filew	*files;
 }					t_path;
@@ -60,5 +60,7 @@ void		show_dir(t_env *env, t_path *path);
 void		show_dirs(t_env *env);
 
 int			ft_is_hidden(t_env *env, char *name);
+int			ft_is_dot_dotdot(t_env *env, int type, char *name);
+t_filew		*ft_sort_ascii(t_filew *path);
 
 # endif
