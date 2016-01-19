@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:46:42 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/14 18:16:42 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/19 14:59:37 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,49 @@ int		ft_is_dot_dotdot(t_env *env, int type, char *name)
 	return (0);
 }
 
-t_filew	*ft_sort_ascii(t_filew *path)
+void		ft_swap(t_filew *cur, t_filew *next)
 {
-	t_filew	*save;
-	t_filew *tmp;
+	void		*swap;
+	int			tmp;
+	struct stat tmpp;
 
-	save = path;
-	return (path);
+	swap = cur->name;
+	cur->name = next->name;
+	next->name = swap;
+	tmp = cur->type;
+	cur->type = next->type;
+	next->type = tmp;
+	tmpp = cur->stat;
+	cur->stat = next->stat;
+	next->stat = tmpp;
+}
+
+t_filew		*ft_sort_ascii(t_filew *lst)
+{
+	t_filew	*tmp;
+	int		flag;
+	void	*swap;
+
+	flag = 1;
+	if (!lst)
+		return NULL;
+	if (!lst->next)
+		return NULL;
+	while (flag)
+	{
+		tmp = lst;
+		flag = 0;
+		while (tmp->next)
+		{
+			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+			{
+				swap = tmp->name;
+				tmp->name = tmp->next->name;
+				tmp->next->name = swap;
+				flag = 1;
+			}
+			tmp = tmp->next;
+		}
+	}
+	return lst;
 }

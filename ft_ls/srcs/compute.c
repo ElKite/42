@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:16 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/14 18:03:27 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/19 15:15:23 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,8 @@ void		compute_dir(t_env *env, t_path *path)
 				ft_addpath(env, ft_strjoins(path->name, "/", tmp->d_name));
 		ft_addfile(path, tmp);
 	}
-	dprintf(1,"-- %s --\n", path->name);
-	path->files = ft_sort_ascii(path->files);
-	//show_dir(env, path);
-	closedir(dir);
-	//show_dirs(env);
+	display(env, path);
+	closedir(dir);	
 }
 
 void		compute_dirs(t_env *env)
@@ -76,22 +73,11 @@ void		show_dir(t_env *env, t_path *path)
 	ft_putchar('\n');
 }
 
-void		show_dirs(t_env *env)
+void		display(t_env *env, t_path *path)
 {
-	t_path		*tmp;
-
-	tmp = env->paths;
-	while (tmp != NULL)
-	{
-		if (tmp->files != NULL)
-		{
-			ft_putstr(tmp->name);
-			ft_putendl(" :");
-		}
-		if (ft_strcmp(tmp->name, ".") == 0 || !ft_is_hidden(env, tmp->name))
-		{
-			show_dir(env, tmp);
-		}
-		tmp = tmp->next;
-	}
+	dprintf(1,"-- %s --\n", path->name);
+	path->files = ft_sort_ascii(path->files);
+	if (env->reverse == TRUE)
+		path->files = ft_reverse(path->files);
+	show_dir(env, path);
 }

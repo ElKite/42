@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/14 17:46:14 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/19 15:15:05 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void		ft_addfile(t_path *path, struct dirent *file);
 void		compute_dir(t_env *env, t_path *path);
 void		compute_dirs(t_env *env);
 void		show_dir(t_env *env, t_path *path);
-void		show_dirs(t_env *env);
+void		display(t_env *env, t_path *path);
 
 int			ft_is_hidden(t_env *env, char *name);
 int			ft_is_dot_dotdot(t_env *env, int type, char *name);
 t_filew		*ft_sort_ascii(t_filew *path);
+t_filew		*ft_reverse(t_filew *path);
 
 # endif
