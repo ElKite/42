@@ -1,0 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
+/*   Updated: 2016/01/20 13:57:10 by vtarreau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+# include "ft_ls.h"
+
+void	sort_options(t_env *env, t_path *path)
+{
+	
+	if (env->reverse == TRUE)
+		path = ft_reverse(path);
+}
+
+void	main_ls(t_env *env,t_path *path)
+{
+	struct dirent	*tmp;
+	DIR				*dir;
+
+	if ((dir == opendir(path->name)) == NULL)
+	{
+		perror(path->name);
+		return ;
+	}
+	while (path->next != NULL)
+	{
+		dprintf(1, " -- %s -- ", path->name);
+		while ((tmp = readdir(dir)) != NULL)
+			add_files_and_dir(path, tmp);
+		sort_both();
+		display_files();
+		while (path->paths->next != NULL)
+		{
+			if (env->recursive == TRUE)
+				main_ls(env, path->paths);
+			path->paths = path->paths->next;
+		}
+			path = path->next;
+			closedir(dir);
+	}
+}
+
+void	ft_ls(t_env	*env)
+{
+	sort_options(env, env->path);
+	main_ls(env, env->path);
+}

@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:16 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/19 15:15:23 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/20 17:18:55 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ char		*ft_strjoins(char *s1, char *s2, char *s3)
 
 	tmp = ft_strjoin(s1, s2);
 	ret = ft_strjoin(tmp, s3);
-	free(tmp);
+	ft_strdel(&tmp);
 	return (ret);
 }
 
-void		compute_dir(t_env *env, t_path *path)
+/*void		compute_dir(t_env *env, t_path *path)
 {
 	struct dirent	*tmp;
 	DIR				*dir;
@@ -78,6 +78,6 @@ void		display(t_env *env, t_path *path)
 	dprintf(1,"-- %s --\n", path->name);
 	path->files = ft_sort_ascii(path->files);
 	if (env->reverse == TRUE)
-		path->files = ft_reverse(path->files);
+		//path->files = ft_reverse(path->files);
 	show_dir(env, path);
-}
+	}*/

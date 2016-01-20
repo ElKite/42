@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:03:47 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/19 15:02:27 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/20 12:22:57 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		main(int argc, char **args)
 		exit_clean(1, "cant malloc struct", env);
 	if (!parse(env, argc, args))
 		exit_clean(1, "parsing failed", env);
-	compute_dirs(env);
+	//compute_dirs(env);
+	ft_ls(env);
 	return (0);
 }

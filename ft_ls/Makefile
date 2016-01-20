@@ -6,7 +6,7 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/20 14:17:44 by vtarreau          #+#    #+#              #
-#    Updated: 2016/01/19 15:15:41 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/01/20 17:12:08 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,7 +20,9 @@ SRC_NAME = 	main.c \
 			lst_util.c \
 			parse.c \
 			tools.c \
-			lst_reverse.c
+			lst_reverse.c \
+			ft_ls.c \
+			main_loop_tools.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

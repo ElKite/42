@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:30 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 18:01:39 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/20 11:53:57 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_path		*ft_newpath(char *name)
 		return (NULL);
 	path->name = name;
 	path->files = NULL;
+	path->paths = NULL;
 	path->next = NULL;
 	return (path);
 }
