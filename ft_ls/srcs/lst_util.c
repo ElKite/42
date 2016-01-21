@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:30 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/20 11:53:57 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:48:58 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ void		ft_addpath(t_env *env, char *name)
 	t_path *tmp;
 
 	path = ft_newpath(name);
-	if (env->paths == NULL)
-		env->paths = path;
+	if (env->args == NULL)
+		env->args = path;
 	else
 	{
-		tmp = env->paths;
+		tmp = env->args;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = path;

@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:41 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/13 18:02:38 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:51:32 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			parse(t_env *env, int size, char **args)
 	env->show_dot = FALSE;
 	env->reverse = FALSE;
 	env->format_out = FALSE;
-	env->paths = NULL;
+	env->args = NULL;
 	while (++i < size)
 	{
 		if (!ft_strchr(args[i], '-'))
@@ -54,7 +54,7 @@ int			parse(t_env *env, int size, char **args)
 		else
 			parse_arg(env, args[i] + 1);
 	}
-	if (env->paths == NULL)
+	if (env->args == NULL)
 		ft_addpath(env, ".");
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:16 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/20 17:18:55 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:27:10 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		*ft_strjoins(char *s1, char *s2, char *s3)
 
 	tmp = ft_strjoin(s1, s2);
 	ret = ft_strjoin(tmp, s3);
-	ft_strdel(&tmp);
+//	ft_strdel(&tmp);
 	return (ret);
 }
 

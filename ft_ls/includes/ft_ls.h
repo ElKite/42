@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/20 16:32:02 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:48:18 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct		s_filew
 
 typedef struct		s_env
 {
-	t_path			*path;
+	t_path			*args;
 
 	int				show_dot;
 	int				recursive;

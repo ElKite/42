@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/21 12:57:26 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:44:52 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sort_both(t_env *env, t_path *path)
 {
-	path->files = ft_sort_ascii(path->files);
+	ft_sort_ascii(path->files);
 	ft_sort_ascii_path(path);
 	if (env->reverse == TRUE)
 	{
@@ -29,7 +29,7 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 {
 	if (!ft_is_hidden(env, file->d_name))
 	{
-		if (file->d_type == DT_DIR)
+		if (file->d_type == DT_DIR && env->recursive == TRUE)
 			if (!ft_is_dot_dotdot(env, file->d_type, file->d_name))
 				ft_addpath(env, ft_strjoins(path->name, "/", file->d_name));
 		ft_addfile(path, file);
@@ -38,6 +38,7 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 
 void	display_files(t_path *path)
 {
+	dprintf(1, "%s:\n", path->name);
 	while (path->files != NULL)
 	{
 		ft_putendl(path->files->name);

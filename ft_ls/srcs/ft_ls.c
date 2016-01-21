@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/21 12:47:59 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 15:52:47 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,24 @@ void	main_ls(t_env *env,t_path *path)
 		perror(path->name);
 		return ;
 	}
-	while (path != NULL)
+	while ((tmp = readdir(dir)) != NULL)
+		add_files_and_dir(env, path, tmp);
+	sort_both(env, path);
+	display_files(path);
+	while (path->paths != NULL)
 	{
-		dprintf(1, " -- %s -- \n", path->name);
-		while ((tmp = readdir(dir)) != NULL)
-			add_files_and_dir(env, path, tmp);
-		sort_both(env, path);
-		display_files(path);
-		while (path->paths != NULL)
-		{
-			dprintf(1, "path->paths != null");
-			if (env->recursive == TRUE)
-			{
-				dprintf(1, "RECURSIVE");
-				main_ls(env, path->paths);
-			}
-			path->paths = path->paths->next;
-		}
-			path = path->next;
-			closedir(dir);
+		if (env->recursive == TRUE)
+			main_ls(env, path->paths);
+		path->paths = path->paths->next;
 	}
+	closedir(dir);
 }
 
 void	ft_ls(t_env	*env)
 {
-	main_ls(env, env->path);
+	while (env->args != NULL)
+	{
+		main_ls(env, env->args);
+		env->args = env->args->next;
+	}
 }
