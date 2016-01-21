@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/20 17:17:13 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/21 12:47:59 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,12 @@ void	main_ls(t_env *env,t_path *path)
 		display_files(path);
 		while (path->paths != NULL)
 		{
+			dprintf(1, "path->paths != null");
 			if (env->recursive == TRUE)
+			{
+				dprintf(1, "RECURSIVE");
 				main_ls(env, path->paths);
+			}
 			path->paths = path->paths->next;
 		}
 			path = path->next;
