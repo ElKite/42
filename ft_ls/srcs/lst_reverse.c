@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:07:19 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/20 16:27:40 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/22 14:38:03 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	next->files = swap_files;
 }
 
-t_path	*ft_sort_ascii_path(t_path *lst)
+t_path		*ft_sort_ascii_path(t_path *lst)
 {
 	t_path	*tmp;
 	int		flag;

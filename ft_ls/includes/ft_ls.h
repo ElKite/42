@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/21 15:48:18 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/22 15:47:06 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ typedef struct		s_env
 int			parse(t_env *env, int size, char **args);
 void		exit_clean(int error, char *msg, t_env *env);
 
-void		ft_addpath(t_env *env, char *name);
+void		ft_addpath_env(t_env *env, char *name);
+void		ft_addpath_path(t_path *path, char *name);
 void		ft_addfile(t_path *path, struct dirent *file);
 
 //void		compute_dir(t_env *env, t_path *path);

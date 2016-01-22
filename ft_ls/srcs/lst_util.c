@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:30 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/21 15:48:58 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:47:54 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_path		*ft_newpath(char *name)
 {
-	t_path *path = NULL;
+	t_path *path;
 
 	if ((path = (t_path*)malloc(sizeof(t_path))) == NULL)
 		return (NULL);
@@ -55,11 +55,11 @@ void		ft_addfile(t_path *path, struct dirent *dirent)
 	}
 }
 
-void		ft_addpath(t_env *env, char *name)
+void		ft_addpath_env(t_env *env, char *name)
 {
 	t_path *path;
 	t_path *tmp;
-
+	
 	path = ft_newpath(name);
 	if (env->args == NULL)
 		env->args = path;
@@ -69,5 +69,21 @@ void		ft_addpath(t_env *env, char *name)
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = path;
+	}
+}
+void		ft_addpath_path(t_path *path, char *name)
+{
+	t_path *new;
+	t_path *tmp;
+
+	new = ft_newpath(name);
+	if (path->paths == NULL)
+		path->paths = new;
+	else
+	{
+		tmp = path->paths;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
 }
