@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 16:06:42 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:58:02 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sort_both(t_env *env, t_path *path)
 {
-	ft_sort_ascii(path->files);
+	//ft_sort_ascii(path->files);
 	//ft_sort_ascii_path(path);
 	if (env->sort_time == TRUE)
 	{
@@ -22,7 +22,7 @@ void	sort_both(t_env *env, t_path *path)
 	if (env->reverse == TRUE)
 	{
 		path->files = ft_reverse_files(path->files);
-		ft_reverse_path(path);
+		path->paths = ft_reverse_path(path->paths);
 	}
 }
 
@@ -39,7 +39,7 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 
 void	display_files(t_path *path)
 {
-	dprintf(1, "\033[1;31m%s\033[1;0m:\n", path->name);
+	dprintf(1, "%s:\n", path->name);
 	while (path->files != NULL)
 	{
 		ft_putendl(path->files->name);

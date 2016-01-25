@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:07:19 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 16:02:38 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/25 15:01:37 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,26 @@ t_filew	*ft_reverse_files(t_filew *llist)
 	return (list);
 }
 
-t_path	*ft_reverse_path(t_path *list)
+t_path	*ft_reverse_path(t_path *llist)
 {
-	t_path*tmp;
-	t_path*first;
-	t_path*new;
+	t_path *tmp1;
+	t_path *tmp2;
+	t_path *list;
 
-	tmp = list->paths;
-	first = NULL;
-	while (tmp)
+	list = llist;
+	if (list != NULL)
 	{
-		new = first;
-		first = tmp;
-		tmp = tmp->next;
-		first->next = new;
+		tmp1 = list->next;
+		list->next = NULL;
+		while (tmp1 != NULL)
+		{
+			tmp2 = tmp1->next;
+			tmp1->next = list;
+			list = tmp1;
+			tmp1 = tmp2;
+		}
 	}
-	list->paths = first;
-	return first;
+	return (list);
 }
 
 void	ft_swap_path(t_path	*cur, t_path *next)
