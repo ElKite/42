@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:30 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/26 15:29:41 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:47:54 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ t_path		*ft_newpath(char *name)
 
 	if ((path = (t_path*)malloc(sizeof(t_path))) == NULL)
 		return (NULL);
-	if ((path->stat = (struct stat*)malloc(sizeof(struct stat))) == NULL)
-		return (NULL);
 	path->name = name;
-	lstat(name, path->stat);
 	path->files = NULL;
 	path->paths = NULL;
 	path->next = NULL;
@@ -34,11 +31,9 @@ t_filew		*ft_newfile(struct dirent *dirent)
 
 	if ((f = (t_filew*)malloc(sizeof(t_filew))) == NULL)
 		return (NULL);
-	if ((f->stat = (struct stat*)malloc(sizeof(struct stat))) == NULL)
-		return (NULL);
 	f->name = ft_strdup(dirent->d_name);
 	f->type = dirent->d_type;
-	lstat(f->name, f->stat);
+	//f->stat = lstat(f->name, 
 	f->next = NULL;
 	return (f);
 }

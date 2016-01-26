@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:07:19 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:01:37 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/26 14:25:37 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,23 @@ t_filew	*ft_reverse_files(t_filew *llist)
 	return (list);
 }
 
-t_path	*ft_reverse_path(t_path *llist)
+t_path	*ft_reverse_path(t_path *list)
 {
-	t_path *tmp1;
-	t_path *tmp2;
-	t_path *list;
+	t_path*tmp;
+	t_path*first;
+	t_path*new;
 
-	list = llist;
-	if (list != NULL)
+	tmp = list->paths;
+	first = NULL;
+	while (tmp)
 	{
-		tmp1 = list->next;
-		list->next = NULL;
-		while (tmp1 != NULL)
-		{
-			tmp2 = tmp1->next;
-			tmp1->next = list;
-			list = tmp1;
-			tmp1 = tmp2;
-		}
+		new = first;
+		first = tmp;
+		tmp = tmp->next;
+		first->next = new;
 	}
-	return (list);
+	list->paths = first;
+	return first;
 }
 
 void	ft_swap_path(t_path	*cur, t_path *next)
@@ -65,30 +62,35 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	swap = cur->name;
 	cur->name = next->name;
 	next->name = swap;
+
 	swap_path = cur->paths;
 	cur->paths = next->paths;
 	next->paths = swap_path;
+
 	swap_files = cur->files;
 	cur->files = next->files;
 	next->files = swap_files;
 }
 
 
-t_path		*ft_sort_ascii_path(t_path *lst)
+void	ft_sort_ascii_path(t_path *lst)
 {
 	t_path	*tmp;
 	
-	if (!lst || !lst->next)
-		return NULL;
-	tmp = lst;
-	while (tmp->next)
+	tmp = lst->paths;
+	while (tmp && tmp->next != NULL)
 	{
 		if (ft_strcmp(tmp->name, tmp->next->name) > 0)
 		{
 			ft_swap_path(tmp, tmp->next);
-			tmp = lst;
+			tmp = lst->paths;
+			continue ;
 		}
 		tmp = tmp->next;
 	}
-	return lst;
+/*	while (tmp->next)
+	{
+		dprintf(1, "%s\n", tmp->name);
+		tmp = tmp->next;
+		}*/
 }

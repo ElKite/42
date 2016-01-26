@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:46:42 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:58:56 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/26 15:22:37 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int			ft_is_dot_dotdot(t_env *env, int type, char *name)
 	return (0);
 }
 
-void	ft_swap(t_filew *cur, t_filew *next)
+void		ft_swap(t_filew *cur, t_filew *next)
 {
-	void	*swap;
-	int	tmp;
-	struct stat tmpp;
+	void		*swap;
+	int			tmp;
+	struct stat *tmpp;
 
 	swap = cur->name;
 	cur->name = next->name;
@@ -47,7 +47,7 @@ void	ft_swap(t_filew *cur, t_filew *next)
 	next->stat = tmpp;
 }
 
-t_filew	*ft_sort_ascii(t_filew *lst)
+t_filew		*ft_sort_ascii(t_filew *lst)
 {
 	t_filew	*tmp;
 	int	flag;

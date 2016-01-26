@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:07:19 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 16:02:38 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:05:48 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_filew	*ft_reverse_files(t_filew *llist)
 
 t_path	*ft_reverse_path(t_path *list)
 {
-	t_path*tmp;
+	t_path*	tmp;
 	t_path*first;
 	t_path*new;
 
@@ -58,6 +58,7 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	void			*swap;
 	struct s_path	*swap_path;
 	struct s_filew	*swap_files;
+	struct stat		*swap_stat;
 
 	swap = cur->name;
 	cur->name = next->name;
@@ -68,24 +69,26 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	swap_files = cur->files;
 	cur->files = next->files;
 	next->files = swap_files;
+	swap_stat = cur->stat;
+	cur->stat = next->stat;
+	next->stat = swap_stat;
 }
 
 
-t_path		*ft_sort_ascii_path(t_path *lst)
+void	ft_sort_ascii_path(t_path *lst)
 {
 	t_path	*tmp;
 	
-	if (!lst || !lst->next)
-		return NULL;
-	tmp = lst;
-	while (tmp->next)
+	tmp = lst->paths;
+	while (tmp && tmp->next != NULL)
 	{
 		if (ft_strcmp(tmp->name, tmp->next->name) > 0)
 		{
 			ft_swap_path(tmp, tmp->next);
-			tmp = lst;
+			tmp = lst->paths;
+			continue ;
 		}
 		tmp = tmp->next;
 	}
-	return lst;
 }
+
