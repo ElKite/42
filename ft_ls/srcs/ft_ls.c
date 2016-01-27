@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/26 14:43:43 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/27 12:08:38 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	main_ls(t_env *env,t_path *path)
 	while ((tmp = readdir(dir)) != NULL)
 		add_files_and_dir(env, path, tmp);
 	sort_both(env, path);
-	display_files(path);
+	display_files(env, path);
 	if (env->recursive == TRUE)
 		while (path->paths != NULL)
 		{

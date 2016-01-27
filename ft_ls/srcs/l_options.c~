@@ -1,0 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   l_options.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/27 12:11:08 by vtarreau          #+#    #+#             */
+/*   Updated: 2016/01/27 12:53:11 by vtarreau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+# include "ft_ls.h"
+
+void	ft_display_types(mode_t st_mode)
+{
+	if ((S_ISFIFO(st_mode)))
+		ft_putchar('p');
+	else if ((S_ISCHR(st_mode)))
+		ft_putchar('c');
+	else if ((S_ISDIR(st_mode)))
+		ft_putchar('d');
+	else if ((S_ISBLK(st_mode)))
+		ft_putchar('b');
+	else if ((S_ISREG(st_mode)))
+		ft_putchar('-');
+	else if ((S_ISLNK(st_mode)))
+		ft_putchar('l');
+	else if ((S_ISSOCK(st_mode)))
+		ft_putchar('s';
+}
+
+void	display_files_l(t_path *path)
+{
+	
+}

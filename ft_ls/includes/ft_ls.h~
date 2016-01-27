@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:59:09 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/26 17:27:36 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,14 @@ typedef struct		s_path
 	struct s_path	*next;
 	struct s_filew	*files;
 	struct s_path	*paths;
+	struct stat		*stat;
 }					t_path;
 
 typedef struct		s_filew
 {
 	char			*name;
 	int				type;
-	struct stat		stat;
+	struct stat		*stat;
 	struct s_filew	*next;
 }					t_filew;
 
@@ -67,10 +68,13 @@ void		sort_both(t_env *env, t_path *path);
 void		add_files_and_dir(t_env *env, t_path *path, struct dirent *file);
 void		display_files(t_path *path);
 
+void		ft_sort_time_path(t_path *lst);
+void		ft_sort_time_files(t_filew *files);
+
 int			ft_is_hidden(t_env *env, char *name);
 int			ft_is_dot_dotdot(t_env *env, int type, char *name);
 t_filew		*ft_sort_ascii(t_filew *path);
-t_path		*ft_sort_ascii_path(t_path *path);
+void		ft_sort_ascii_path(t_path *path);
 void		ft_swap_path(t_path *cur, t_path *next);
 void		ft_swap(t_filew *cur, t_filew *next);
 t_filew		*ft_reverse_files(t_filew *files);
