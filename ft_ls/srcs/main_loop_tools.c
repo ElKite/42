@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/27 12:58:16 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/27 17:08:58 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 void	display_files(t_env *env, t_path *path)
 {
 	dprintf(1, "\033[1;31m%s\033[1;0m:\n", path->name);
+	if (env->format_out == TRUE)
+		dprintf(1, "total %d\n", path->manage->sizeblock);
 	while (path->files != NULL)
 	{
 		if (env->format_out == FALSE)
 			ft_putendl(path->files->name);
 		else
-			display_files_l(path->files);
+			display_files_l(path->files, path->manage);
 		path->files = path->files->next;
 	}
 	ft_putchar('\n');

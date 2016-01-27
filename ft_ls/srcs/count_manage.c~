@@ -1,0 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   count_manage.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/27 15:12:23 by vtarreau          #+#    #+#             */
+/*   Updated: 2016/01/27 15:19:54 by vtarreau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+# include "ft_ls.h"
+
+void	count_sizes(t_env *env, t_path *path)
+{
+	t_filew	*tmp;
+
+	if (env->format_out == TRUE)
+	{
+		tmp = path->files;
+		while (tmp != NULL)
+		{
+			ft_link_size(tmp->stat->st_nlink, path);
+			ft_owner_size(tmp->stat->, path);
+			tmp = tmp->next;
+		}
+	}
+}
