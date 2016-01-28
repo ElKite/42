@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/27 17:08:58 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/28 16:36:15 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	sort_both(t_env *env, t_path *path)
 {
 	if (env->sort_time == TRUE)
 	{
-		dprintf(1, "TOTOTOTOTOT\n");
 		ft_sort_time_files(path->files);
 		ft_sort_time_path(path);
 	}
@@ -53,7 +52,7 @@ void	display_files(t_env *env, t_path *path)
 		if (env->format_out == FALSE)
 			ft_putendl(path->files->name);
 		else
-			display_files_l(path->files, path->manage);
+			display_files_l(path->files, path->manage, path->name);
 		path->files = path->files->next;
 	}
 	ft_putchar('\n');

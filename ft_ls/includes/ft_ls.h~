@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/26 17:27:36 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/27 17:15:25 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <pwd.h>
+# include <grp.h>
+# include <uuid/uuid.h>
 # include <stdio.h>
+# include <time.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -29,6 +33,7 @@ typedef struct		s_path
 	struct s_filew	*files;
 	struct s_path	*paths;
 	struct stat		*stat;
+	struct s_manage *manage;
 }					t_path;
 
 typedef struct		s_filew
@@ -38,6 +43,15 @@ typedef struct		s_filew
 	struct stat		*stat;
 	struct s_filew	*next;
 }					t_filew;
+
+typedef struct		s_manage
+{
+	size_t			links;
+	size_t			owner;
+	size_t			groups;
+	size_t			size;
+	int				sizeblock;
+}					t_manage;
 
 typedef struct		s_env
 {
@@ -66,11 +80,14 @@ void		ft_ls(t_env *env);
 void		main_ls(t_env *env, t_path *path);
 void		sort_both(t_env *env, t_path *path);
 void		add_files_and_dir(t_env *env, t_path *path, struct dirent *file);
-void		display_files(t_path *path);
+void		display_files(t_env *env, t_path *path);
+void		display_files_l(t_filew *file, t_manage *manage);
+void		count_sizes(t_env *env, t_path *path);
 
 void		ft_sort_time_path(t_path *lst);
 void		ft_sort_time_files(t_filew *files);
 
+void		ft_putnspace(int i);
 int			ft_is_hidden(t_env *env, char *name);
 int			ft_is_dot_dotdot(t_env *env, int type, char *name);
 t_filew		*ft_sort_ascii(t_filew *path);
