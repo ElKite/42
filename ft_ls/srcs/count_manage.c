@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 15:12:23 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/28 16:37:57 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/29 14:52:36 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	show_link(char *name, t_filew *file)
 void	count_sizes(t_env *env, t_path *path)
 {
 	t_filew	*tmp;
-
+//	dprintf(1, "TEST\n");
 	if (env->format_out == TRUE)
 	{
 		tmp = path->files;

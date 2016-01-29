@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/27 17:15:25 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/28 16:37:19 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ void		main_ls(t_env *env, t_path *path);
 void		sort_both(t_env *env, t_path *path);
 void		add_files_and_dir(t_env *env, t_path *path, struct dirent *file);
 void		display_files(t_env *env, t_path *path);
-void		display_files_l(t_filew *file, t_manage *manage);
+void		display_files_l(t_filew *file, t_manage *manage, char *name);
 void		count_sizes(t_env *env, t_path *path);
+void		ft_display_rights(mode_t st_mode);
+void		show_link(char *name, t_filew *file);
 
 void		ft_sort_time_path(t_path *lst);
 void		ft_sort_time_files(t_filew *files);
