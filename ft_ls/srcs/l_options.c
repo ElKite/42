@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 12:11:08 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/28 16:39:41 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/01 12:18:04 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,12 @@ void	display_files_l(t_filew *file, t_manage *manage, char *name)
 	ft_display_time(file->stat->st_mtime);
 	ft_putstr(file->name);
 	if (S_ISLNK(file->stat->st_mode))
+	{
 		show_link(name, file);
+/*		char *ret = (char*)malloc((sizeof(char) * 128));
+		readlink(name, ret, 128);
+		dprintf(1, "TEST %s", ret);*/
+	}
 	else
 		ft_putchar('\n');
 }

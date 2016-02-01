@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 12:11:08 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/27 17:16:41 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/28 16:39:41 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,7 @@ void	ft_display_types_and_rights(mode_t st_mode, nlink_t st_nlink, int i)
 		ft_putchar('l');
 	else if ((S_ISSOCK(st_mode)))
 		ft_putchar('s');
-	ft_putchar((st_mode & S_IRUSR) ? 'r' : '-');
-	ft_putchar((st_mode & S_IWUSR) ? 'w' : '-');
-	ft_putchar((st_mode & S_IXUSR) ? 'x' : '-');
-	ft_putchar((st_mode & S_IRGRP) ? 'r' : '-');
-	ft_putchar((st_mode & S_IWGRP) ? 'w' : '-');
-	ft_putchar((st_mode & S_IXGRP) ? 'x' : '-');
-	ft_putchar((st_mode & S_IROTH) ? 'r' : '-');
-	ft_putchar((st_mode & S_IWOTH) ? 'w' : '-');
-	ft_putchar((st_mode & S_IXOTH) ? 'x' : '-');
-//check socket etc
+	ft_display_rights(st_mode);
 	ft_putnspace(i - ft_strlen(ft_itoa(st_nlink)));
 	ft_putstr(ft_itoa(st_nlink));
 }
@@ -59,8 +50,22 @@ void	ft_display_owner_and_group(struct stat *stat, t_manage *m)
 		ft_putnspace(m->groups - ft_strlen(name->gr_name));
 		ft_putstr(name->gr_name);
 	}
-	ft_putnspace(m->size - ft_strlen(ft_itoa(stat->st_size)));
-	ft_putstr(ft_itoa(stat->st_size));
+}
+void	ft_display_size_and_major(struct stat *stat, t_manage *m)
+{
+	if (S_ISBLK(stat->st_mode) || S_ISCHR(stat->st_mode))
+	{
+		ft_putchar(' ');
+		ft_putstr(ft_itoa(major(stat->st_rdev)));
+		ft_putstr(", ");
+		ft_putstr(ft_itoa(minor(stat->st_rdev)));
+		ft_putchar('\t');
+	}
+	else 
+	{
+		ft_putnspace(m->size - ft_strlen(ft_itoa(stat->st_size)));
+		ft_putstr(ft_itoa(stat->st_size));
+	}
 }
 
 void	ft_display_time(const time_t mtime)
@@ -89,11 +94,16 @@ void	ft_display_time(const time_t mtime)
 	ft_putstr(date);
 }
 
-void	display_files_l(t_filew *file, t_manage *manage)
+void	display_files_l(t_filew *file, t_manage *manage, char *name)
 {
 	ft_display_types_and_rights(file->stat->st_mode, file->stat->st_nlink,
 								manage->links);
 	ft_display_owner_and_group(file->stat, manage);
+	ft_display_size_and_major(file->stat, manage);
 	ft_display_time(file->stat->st_mtime);
-	ft_putendl(file->name);
+	ft_putstr(file->name);
+	if (S_ISLNK(file->stat->st_mode))
+		show_link(name, file);
+	else
+		ft_putchar('\n');
 }

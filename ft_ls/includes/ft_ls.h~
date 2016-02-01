@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/28 16:37:19 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/29 16:49:19 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,17 @@ typedef struct		s_manage
 typedef struct		s_env
 {
 	t_path			*args;
+	t_filew			*files;
 
 	int				show_dot;
 	int				recursive;
 	int				sort_time;
 	int				reverse;
 	int				format_out;
+	int				show_dirname;
 }					t_env;
 
-int			parse(t_env *env, int size, char **args);
+void		parse(t_env *env, int size, char **args);
 void		exit_clean(int error, char *msg, t_env *env);
 
 void		ft_addpath_env(t_env *env, char *name);
@@ -85,6 +87,8 @@ void		display_files_l(t_filew *file, t_manage *manage, char *name);
 void		count_sizes(t_env *env, t_path *path);
 void		ft_display_rights(mode_t st_mode);
 void		show_link(char *name, t_filew *file);
+int			check_exist(char *path);
+void		addfile_toenv(t_env *env, char *path);
 
 void		ft_sort_time_path(t_path *lst);
 void		ft_sort_time_files(t_filew *files);
