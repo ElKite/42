@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 12:11:08 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/01 12:18:04 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 16:17:53 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 void	ft_display_types_and_rights(mode_t st_mode, nlink_t st_nlink, int i)
 {
@@ -33,7 +33,7 @@ void	ft_display_types_and_rights(mode_t st_mode, nlink_t st_nlink, int i)
 	ft_putstr(ft_itoa(st_nlink));
 }
 
-void	ft_display_owner_and_group(struct stat *stat, t_manage *m)
+void	ft_display_owner_and_group(t_stat *stat, t_manage *m)
 {
 	struct passwd	*pass;
 	struct group	*name;
@@ -51,7 +51,8 @@ void	ft_display_owner_and_group(struct stat *stat, t_manage *m)
 		ft_putstr(name->gr_name);
 	}
 }
-void	ft_display_size_and_major(struct stat *stat, t_manage *m)
+
+void	ft_display_size_and_major(t_stat *stat, t_manage *m)
 {
 	if (S_ISBLK(stat->st_mode) || S_ISCHR(stat->st_mode))
 	{
@@ -61,7 +62,7 @@ void	ft_display_size_and_major(struct stat *stat, t_manage *m)
 		ft_putstr(ft_itoa(minor(stat->st_rdev)));
 		ft_putchar('\t');
 	}
-	else 
+	else
 	{
 		ft_putnspace(m->size - ft_strlen(ft_itoa(stat->st_size)));
 		ft_putstr(ft_itoa(stat->st_size));
@@ -73,7 +74,7 @@ void	ft_display_time(const time_t mtime)
 	char *date;
 	char *tmp;
 	char *tmp2;
-	
+
 	date = ft_strdup(ctime(&mtime));
 	tmp = ft_strsub(date, 4, 7);
 	if (time(0) - mtime >= 15724800 || time(0) < mtime)
@@ -86,7 +87,7 @@ void	ft_display_time(const time_t mtime)
 	}
 	else
 	{
-		tmp2 = ft_strsub(date,  11, 5 );
+		tmp2 = ft_strsub(date, 11, 5);
 		tmp2 = ft_strjoin(tmp2, ft_strdup(" "));
 		date = ft_strjoin(tmp, tmp2);
 		date = ft_strjoin(ft_strdup(" "), date);
@@ -105,9 +106,6 @@ void	display_files_l(t_filew *file, t_manage *manage, char *name)
 	if (S_ISLNK(file->stat->st_mode))
 	{
 		show_link(name, file);
-/*		char *ret = (char*)malloc((sizeof(char) * 128));
-		readlink(name, ret, 128);
-		dprintf(1, "TEST %s", ret);*/
 	}
 	else
 		ft_putchar('\n');

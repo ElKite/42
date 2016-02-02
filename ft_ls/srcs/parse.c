@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:41 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/29 16:50:05 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:40:38 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ static void	init(t_env *env)
 	env->files = NULL;
 }
 
+static void	check(t_env *env, int j, int ret)
+{
+	if (env->args == NULL && env->files == NULL && ret != -1)
+		ft_addpath_env(env, ".");
+	if (j > 1)
+		env->show_dirname = TRUE;
+}
 
 void		parse(t_env *env, int size, char **args)
 {
@@ -63,7 +70,7 @@ void		parse(t_env *env, int size, char **args)
 	{
 		if (args[i][0] == '-' && flag == 0)
 			parse_arg(env, args[i] + 1);
-		else 
+		else
 		{
 			j++;
 			flag = 1;
@@ -74,8 +81,5 @@ void		parse(t_env *env, int size, char **args)
 				addfile_toenv(env, args[i]);
 		}
 	}
-	if (env->args == NULL && env->files == NULL && ret != -1)
-		ft_addpath_env(env, ".");
-	if (j > 1)
-		env->show_dirname = TRUE;
+	check(env, j, ret);
 }

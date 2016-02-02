@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/29 16:53:47 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/01 15:28:22 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,42 @@ void	main_ls(t_env *env,t_path *path)
 	closedir(dir);
 }
 
+void	display_only_files(t_filew *file, t_env *env)
+{
+	t_manage *manage;
+
+	if (env->format_out == TRUE)
+	{
+		manage = (t_manage*)malloc(sizeof(t_manage));
+		manage->links = 1;
+		manage->owner = 0;
+		manage->groups = 0;
+		manage->size = 0;
+		manage->sizeblock = 0;
+		display_files_l(file, manage, file->name);
+	}
+	else
+		ft_putendl(file->name);
+}
+
 void	ft_ls(t_env	*env)
 {
 	if (env->args != NULL && (env->args->next != NULL || env->recursive == TRUE))
 		env->show_dirname = TRUE;
-	//show files
-	// & sort
+	if (env->files != NULL)
+	{
+		if (env->sort_time == TRUE)
+			ft_sort_time_files(env->files);
+		else
+			ft_sort_ascii(env->files);
+		if (env->reverse == TRUE)
+			ft_reverse_files(env->files);
+	}
+	while (env->files != NULL)
+	{
+		display_only_files(env->files, env);
+		env->files = env->files->next;
+	}
 	while (env->args != NULL)
 	{
 		main_ls(env, env->args);

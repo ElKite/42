@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/29 16:49:19 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/01 12:11:54 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <uuid/uuid.h>
 # include <stdio.h>
 # include <time.h>
+# include <unistd.h>
 
 # define TRUE 1
 # define FALSE 0

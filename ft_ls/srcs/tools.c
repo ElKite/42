@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:46:42 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/26 15:22:37 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:14:44 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 int			ft_is_hidden(t_env *env, char *name)
 {
@@ -50,11 +50,11 @@ void		ft_swap(t_filew *cur, t_filew *next)
 t_filew		*ft_sort_ascii(t_filew *lst)
 {
 	t_filew	*tmp;
-	int	flag;
+	int		flag;
 
 	flag = 1;
 	if (!lst || !lst->next)
-		return NULL;
+		return (NULL);
 	while (flag)
 	{
 		tmp = lst;
@@ -69,5 +69,5 @@ t_filew		*ft_sort_ascii(t_filew *lst)
 			tmp = tmp->next;
 		}
 	}
-	return lst;
+	return (lst);
 }

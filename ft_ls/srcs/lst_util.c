@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:30 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/29 14:47:37 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:47:19 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		ft_addpath_env(t_env *env, char *name)
 {
 	t_path *path;
 	t_path *tmp;
-	
+
 	path = ft_newpath(name);
 	if (env->args == NULL)
 		env->args = path;
@@ -82,6 +82,7 @@ void		ft_addpath_env(t_env *env, char *name)
 		tmp->next = path;
 	}
 }
+
 void		ft_addpath_path(t_path *path, char *name)
 {
 	t_path *new;

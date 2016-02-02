@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:41 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/27 13:03:29 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/01/29 16:50:05 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,47 @@ void		parse_arg(t_env *env, char *arg)
 	}
 }
 
-
-int			parse(t_env *env, int size, char **args)
+static void	init(t_env *env)
 {
-	int		i;
-
-	i = 0;
 	env->recursive = FALSE;
 	env->sort_time = FALSE;
 	env->show_dot = FALSE;
 	env->reverse = FALSE;
 	env->format_out = FALSE;
+	env->show_dirname = FALSE;
 	env->args = NULL;
+	env->files = NULL;
+}
+
+
+void		parse(t_env *env, int size, char **args)
+{
+	int		i;
+	int		j;
+	int		flag;
+	int		ret;
+
+	init(env);
+	i = 0;
+	j = 0;
+	flag = 0;
 	while (++i < size)
 	{
-		if (!(*args[i] == '-'))
-			ft_addpath_env(env, args[i]);
-		else
+		if (args[i][0] == '-' && flag == 0)
 			parse_arg(env, args[i] + 1);
+		else 
+		{
+			j++;
+			flag = 1;
+			ret = check_exist(args[i]);
+			if (ret == 1)
+				ft_addpath_env(env, args[i]);
+			else if (ret == 0)
+				addfile_toenv(env, args[i]);
+		}
 	}
-	if (env->args == NULL)
+	if (env->args == NULL && env->files == NULL && ret != -1)
 		ft_addpath_env(env, ".");
-	return (TRUE);
+	if (j > 1)
+		env->show_dirname = TRUE;
 }

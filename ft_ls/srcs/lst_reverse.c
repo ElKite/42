@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:07:19 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/26 17:05:48 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:54:13 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 t_filew	*ft_reverse_files(t_filew *llist)
 {
@@ -36,9 +36,9 @@ t_filew	*ft_reverse_files(t_filew *llist)
 
 t_path	*ft_reverse_path(t_path *list)
 {
-	t_path*	tmp;
-	t_path*first;
-	t_path*new;
+	t_path	*tmp;
+	t_path	*first;
+	t_path	*new;
 
 	tmp = list->paths;
 	first = NULL;
@@ -50,10 +50,10 @@ t_path	*ft_reverse_path(t_path *list)
 		first->next = new;
 	}
 	list->paths = first;
-	return first;
+	return (first);
 }
 
-void	ft_swap_path(t_path	*cur, t_path *next)
+void	ft_swap_path(t_path *cur, t_path *next)
 {
 	void			*swap;
 	struct s_path	*swap_path;
@@ -74,11 +74,10 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	next->stat = swap_stat;
 }
 
-
 void	ft_sort_ascii_path(t_path *lst)
 {
 	t_path	*tmp;
-	
+
 	tmp = lst->paths;
 	while (tmp && tmp->next != NULL)
 	{
@@ -91,4 +90,3 @@ void	ft_sort_ascii_path(t_path *lst)
 		tmp = tmp->next;
 	}
 }
-

@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/01 15:28:22 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:05:11 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 int		check_exist(char *path)
 {
@@ -62,7 +62,7 @@ void	addfile_toenv(t_env *env, char *path)
 	}
 }
 
-void	main_ls(t_env *env,t_path *path)
+void	main_ls(t_env *env, t_path *path)
 {
 	struct dirent	*tmp;
 	DIR				*dir;
@@ -104,9 +104,10 @@ void	display_only_files(t_filew *file, t_env *env)
 		ft_putendl(file->name);
 }
 
-void	ft_ls(t_env	*env)
+void	ft_ls(t_env *env)
 {
-	if (env->args != NULL && (env->args->next != NULL || env->recursive == TRUE))
+	if (env->args != NULL && (env->args->next != NULL ||
+						env->recursive == TRUE))
 		env->show_dirname = TRUE;
 	if (env->files != NULL)
 	{
