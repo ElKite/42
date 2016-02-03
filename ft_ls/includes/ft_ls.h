@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:00 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:13:31 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:43:42 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void				display_files_l(t_filew *file, t_manage *manage,
 void				count_sizes(t_env *env, t_path *path);
 void				ft_display_rights(mode_t st_mode);
 void				show_link(char *name, t_filew *file);
-int					check_exist(char *path);
+int					check_exist(char *path, t_env *env);
 void				addfile_toenv(t_env *env, char *path);
 
 void				ft_sort_time_path(t_path *lst);
@@ -102,5 +102,6 @@ void				ft_swap(t_filew *cur, t_filew *next);
 t_filew				*ft_reverse_files(t_filew *files);
 t_path				*ft_reverse_path(t_path *path);
 char				*ft_strjoins(char *s1, char *s2, char *s3);
+char				*get_real_path(char *path);
 
 #endif

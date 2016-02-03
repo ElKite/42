@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 15:12:23 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:05:48 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 13:30:12 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	show_link(char *name, t_filew *file)
 	char	result[256];
 	int		ret;
 
-	ret = readlink(ft_strjoins(name, "/", file->name), result, 256);
+	(void)file;
+	ret = readlink(name, result, 256);
 	result[ret] = 0;
 	ft_putstr(" -> ");
 	ft_putendl(result);

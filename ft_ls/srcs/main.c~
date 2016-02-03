@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:03:47 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/03 14:33:39 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 14:32:32 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exit_clean(int error, char *reason, t_env *env)
 {
 	((void)env);
 	if (error)
-		ft_putstr("Illegal options : ");
+		ft_putstr("E : ");
 	ft_putendl(reason);
 	exit(0);
 }

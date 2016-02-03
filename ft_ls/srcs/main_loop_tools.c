@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:41:21 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 16:03:26 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,15 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 	if (!ft_is_hidden(env, file->d_name))
 	{
 		if (file->d_type == DT_DIR && env->recursive == TRUE)
+		{
 			if (!ft_is_dot_dotdot(env, file->d_type, file->d_name))
 				ft_addpath_path(path, ft_strjoins(path->name, "/",
-										file->d_name));
+											file->d_name));
+		}
+		/*else if (file->d_type == DT_LNK && env->recursive == TRUE)
+			if (!ft_is_dot_dotdot(env, file->d_type, file->d_name))
+				//ft_addpath_path(path, get_real_path(ft_strjoins(path->name, "/",
+				//									file->d_name)));*/
 		ft_addfile(path, file);
 	}
 }

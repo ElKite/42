@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:05:41 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:40:38 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:03:38 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		parse(t_env *env, int size, char **args)
 		{
 			j++;
 			flag = 1;
-			ret = check_exist(args[i]);
+			ret = check_exist(args[i], env);
 			if (ret == 1)
 				ft_addpath_env(env, args[i]);
 			else if (ret == 0)

@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/01/29 16:52:08 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:41:21 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 void	sort_both(t_env *env, t_path *path)
 {
@@ -37,7 +37,8 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 	{
 		if (file->d_type == DT_DIR && env->recursive == TRUE)
 			if (!ft_is_dot_dotdot(env, file->d_type, file->d_name))
-				ft_addpath_path(path, ft_strjoins(path->name, "/", file->d_name));
+				ft_addpath_path(path, ft_strjoins(path->name, "/",
+										file->d_name));
 		ft_addfile(path, file);
 	}
 }

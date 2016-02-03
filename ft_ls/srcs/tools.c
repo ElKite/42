@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 14:46:42 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:14:44 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:43:21 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ t_filew		*ft_sort_ascii(t_filew *lst)
 		}
 	}
 	return (lst);
+}
+
+char		*get_real_path(char *path)
+{
+	char	*result;
+	int		ret;
+
+	result = ft_strnew(256);
+	ret = readlink(path, result, 256);
+	result[ret] = 0;
+	if (path[0] == '/')
+		result = ft_strjoin("/", result);
+	return (result);
 }

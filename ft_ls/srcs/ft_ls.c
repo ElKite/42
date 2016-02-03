@@ -6,13 +6,13 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/02 15:05:11 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:12:22 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		check_exist(char *path)
+int		check_exist(char *path, t_env *env)
 {
 	struct stat	*stat;
 
@@ -29,7 +29,14 @@ int		check_exist(char *path)
 		free(stat);
 		return (1);
 	}
-	free(stat);
+	else if (S_ISLNK(stat->st_mode))
+	{
+		free(stat);
+		if (env->format_out == TRUE)
+			return (0);
+		else
+			return (1);
+	}
 	return (0);
 }
 
@@ -37,16 +44,18 @@ void	addfile_toenv(t_env *env, char *path)
 {
 	t_filew	*tmp;
 	t_filew	*new;
-	int		i;
-	char	**tab;
+//	int		i;
+//	char	**tab;
 
 	if ((new = malloc(sizeof(t_filew))) == NULL)
 		return ;
-	tab = ft_strsplit(path, '/');
+/*	tab = ft_strsplit(path, '/');
+	dprintf(1, "TOTO");
 	i = 0;
 	while (tab[i])
 		i++;
-	new->name = ft_strdup(tab[i - 1]);
+		new->name = ft_strdup(tab[i - 1]);*/
+	new->name = ft_strdup(path);
 	if ((new->stat = malloc(sizeof(struct stat))) == NULL)
 		return ;
 	lstat(path, new->stat);
@@ -122,6 +131,8 @@ void	ft_ls(t_env *env)
 	{
 		display_only_files(env->files, env);
 		env->files = env->files->next;
+		if (env->files == NULL)
+			ft_putchar('\n');
 	}
 	while (env->args != NULL)
 	{

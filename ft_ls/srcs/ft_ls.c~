@@ -6,11 +6,11 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/01 15:28:22 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/03 12:03:31 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ls.h"
+#include "ft_ls.h"
 
 int		check_exist(char *path)
 {
@@ -37,16 +37,18 @@ void	addfile_toenv(t_env *env, char *path)
 {
 	t_filew	*tmp;
 	t_filew	*new;
-	int		i;
-	char	**tab;
+//	int		i;
+//	char	**tab;
 
 	if ((new = malloc(sizeof(t_filew))) == NULL)
 		return ;
-	tab = ft_strsplit(path, '/');
+/*	tab = ft_strsplit(path, '/');
+	dprintf(1, "TOTO");
 	i = 0;
 	while (tab[i])
 		i++;
-	new->name = ft_strdup(tab[i - 1]);
+		new->name = ft_strdup(tab[i - 1]);*/
+	new->name = ft_strdup(path);
 	if ((new->stat = malloc(sizeof(struct stat))) == NULL)
 		return ;
 	lstat(path, new->stat);
@@ -62,7 +64,7 @@ void	addfile_toenv(t_env *env, char *path)
 	}
 }
 
-void	main_ls(t_env *env,t_path *path)
+void	main_ls(t_env *env, t_path *path)
 {
 	struct dirent	*tmp;
 	DIR				*dir;
@@ -104,9 +106,10 @@ void	display_only_files(t_filew *file, t_env *env)
 		ft_putendl(file->name);
 }
 
-void	ft_ls(t_env	*env)
+void	ft_ls(t_env *env)
 {
-	if (env->args != NULL && (env->args->next != NULL || env->recursive == TRUE))
+	if (env->args != NULL && (env->args->next != NULL ||
+						env->recursive == TRUE))
 		env->show_dirname = TRUE;
 	if (env->files != NULL)
 	{
@@ -122,6 +125,7 @@ void	ft_ls(t_env	*env)
 		display_only_files(env->files, env);
 		env->files = env->files->next;
 	}
+	ft_putchar('\n');
 	while (env->args != NULL)
 	{
 		main_ls(env, env->args);
