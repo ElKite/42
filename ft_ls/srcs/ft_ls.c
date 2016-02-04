@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 11:51:17 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/03 15:12:22 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:26:48 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,9 @@ void	addfile_toenv(t_env *env, char *path)
 {
 	t_filew	*tmp;
 	t_filew	*new;
-//	int		i;
-//	char	**tab;
 
 	if ((new = malloc(sizeof(t_filew))) == NULL)
 		return ;
-/*	tab = ft_strsplit(path, '/');
-	dprintf(1, "TOTO");
-	i = 0;
-	while (tab[i])
-		i++;
-		new->name = ft_strdup(tab[i - 1]);*/
 	new->name = ft_strdup(path);
 	if ((new->stat = malloc(sizeof(struct stat))) == NULL)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/20 12:28:40 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/03 16:03:26 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/04 15:27:50 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,14 @@ void	add_files_and_dir(t_env *env, t_path *path, struct dirent *file)
 				ft_addpath_path(path, ft_strjoins(path->name, "/",
 											file->d_name));
 		}
-		/*else if (file->d_type == DT_LNK && env->recursive == TRUE)
-			if (!ft_is_dot_dotdot(env, file->d_type, file->d_name))
-				//ft_addpath_path(path, get_real_path(ft_strjoins(path->name, "/",
-				//									file->d_name)));*/
 		ft_addfile(path, file);
 	}
 }
 
 void	display_files(t_env *env, t_path *path)
 {
-	if (env->show_dirname && ft_strcmp(path->name, ".") != 0)
+	if (env->show_dirname && ft_strcmp(path->name, ".") != 0 && path->files
+		!= NULL)
 		dprintf(1, "\033[1;31m%s\033[1;0m:\n", path->name);
 	if (env->format_out == TRUE)
 		dprintf(1, "total %d\n", path->manage->sizeblock);

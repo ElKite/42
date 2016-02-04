@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_is_char_at_postion.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/13 12:03:47 by vtarreau          #+#    #+#             */
-/*   Updated: 2016/02/03 14:32:32 by vtarreau         ###   ########.fr       */
+/*   Created: 2016/02/04 14:43:52 by vtarreau          #+#    #+#             */
+/*   Updated: 2016/02/04 15:04:06 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "libft.h"
 
-void	exit_clean(int error, char *reason, t_env *env)
+int		ft_is_char_at_position(char *s, char c, int l)
 {
-	((void)env);
-	if (error)
-		ft_putstr("E : ");
-	ft_putendl(reason);
-	exit(0);
-}
+	int	i;
 
-int		main(int argc, char **args)
-{
-	t_env	*env;
-
-	if ((env = (t_env*)malloc(sizeof(t_env))) == NULL)
-		exit_clean(1, "cant malloc struct", env);
-	parse(env, argc, args);
-	ft_ls(env);
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == c && i == l)
+			return (1);
+	}
 	return (0);
 }

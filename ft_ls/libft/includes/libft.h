@@ -6,7 +6,7 @@
 /*   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/05 11:48:20 by vtarreau          #+#    #+#             */
-/*   Updated: 2015/03/27 14:47:03 by vtarreau         ###   ########.fr       */
+/*   Updated: 2016/02/04 15:07:50 by vtarreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ int					ft_string_position(char **tab, char *s);
 void				ft_replace_str_in_tab(char ***tab, int pos, char *s);
 void				ft_del_tab_str(char ***tab, int pos);
 char				**ft_tabception(char **tab, int start, int end);
+int					ft_is_char_at_position(char *s, char c, int l);
 
 #endif

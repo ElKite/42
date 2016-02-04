@@ -6,7 +6,7 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/11 16:14:33 by vtarreau          #+#    #+#              #
-#    Updated: 2016/01/13 17:13:29 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/02/04 15:07:26 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -95,7 +95,8 @@ SRC_NAME = ft_atoi.c \
 		ft_string_position.c \
 		ft_replace_str_in_tab.c \
 		ft_del_tab_str.c \
-		ft_tabception.c
+		ft_tabception.c \
+		ft_is_char_at_postion.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJ_PATH = ./obj/
