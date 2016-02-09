@@ -6,7 +6,7 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/11 16:14:33 by vtarreau          #+#    #+#              #
-#    Updated: 2016/02/04 15:07:26 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/02/08 11:58:19 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -121,6 +121,7 @@ fclean:		clean
 re:			fclean all
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INCL)
+	@mkdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
 	$(CC) $(FLAGS) -I ./includes/ -o $@ -c $<
 
 .PHONY: all clean fclean re
