@@ -1,27 +1,40 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Int8.hpp                                           :+:      :+:    :+:   //
+//   TOperand.hpp                                       :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2016/04/22 14:48:53 by vtarreau          #+#    #+#             //
-//   Updated: 2016/04/22 14:48:54 by vtarreau         ###   ########.fr       //
+//   Created: 2016/04/22 14:41:37 by vtarreau          #+#    #+#             //
+//   Updated: 2016/04/22 14:41:38 by vtarreau         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef IOperand_HPP
-#define IOperand_HPP
+#ifndef TOPERAND_HPP
+#define TOPERAND_HPP
 
 #include "IOperand.hpp"
-#include <stdint.h>
+#include "TOperand.tpp"
 
-class Int8 : public TOperand, public IOperand {
+template <typename T> class TOperand;
+
+class TOperand : public IOperand {
+
+	T _value;
+
+	TOperand();
 
 public:
 
+	Toperand(T value){};
+	TOperand(TOperand const & src);
+	~TOperand();
+
 	virtual int getPrecision( void ) const; // Precision of the type of the instance
 	virtual eOperandType getType( void ) const; // Type of the instance
+	T 			getValue();
+
+	TOperand & operator=(Toperand const & src);
 
 	virtual IOperand const * operator+( IOperand const & rhs ) const; // Sum
 	virtual IOperand const * operator-( IOperand const & rhs ) const; // Difference
@@ -30,7 +43,6 @@ public:
 	virtual IOperand const * operator%( IOperand const & rhs ) const; // Modulo
 
 	virtual std::string const & toString( void ) const; // String representation of the instance
-	virtual ~IOperand( void );
 
 };
 

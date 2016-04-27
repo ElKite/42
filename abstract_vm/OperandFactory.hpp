@@ -21,13 +21,14 @@ class OperandFactory {
 
 public:
 
+
 	OperandFactory();
 	OperandFactory(OperandFactory const & src)
 	~OperandFactory();
 
 	OperandFactory & operator=(OperandFactory & const src);
 
-	IOperand const * createOperand(eOperandType typem std::string const & value) const;
+	IOperand const * createOperand(eOperandType type, std::string const & value) const;
 
 	IOperand const * createInt8( std::string const & value ) const;
 	IOperand const * createInt16( std::string const & value ) const;
