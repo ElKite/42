@@ -11,27 +11,24 @@
 // ************************************************************************** //
 
 #include "TOperand.hpp"
+#include <cstdint.h>
 
-template <typename T>
 TOperand::TOperand()
 {
 	return ;
 }
 
-template <typename T>
-TOperand::TOperand(T value) : _value(value)
+TOperand::TOperand(double value, eOperandType type) : _value(value), _type(type)
 {
 	return ;
 }
 
-template <typename T>
-TOperand::TOperand(TOperand const & src)
+TOperand::TOperand(TOperand<T> const & src)
 {
 	*this = src;
 	return ;
 }
 
-template <typename T>
 TOperand::~TOperand()
 {
 	return ;
@@ -39,56 +36,91 @@ TOperand::~TOperand()
 
 
 template <typename T>
-TOperand & TOperand::operator=(TOperand const &  src)
+TOperand<T> & TOperand::operator=(TOperand<T> const &  src)
 {
 	this->_value = src.getValue();
+	this->_precision = src.getPrecision();
+	this->_type = src.getType();
 	return *this;
 }
 
-template <typename T>
 IOperand const * TOperand::operator+(IOperand const & src) const
 {
-	
+	TOperand * operand = NULL;
+	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
+
+	double value = src.getValue + this->_value;
+	//throw exception
+
+
+	switch(myOperand[type].precision)
+	{
+		case 0:
+		{
+			operand = new TOperand<int8_t>(value, INT8);
+			break;
+		}
+		case 1:
+		{
+			operand = new TOperand<int16_t)>(value, INT16);
+			break ;
+		}
+		case 2:
+		{
+			operand = new TOperand<int32_t>(value, INT32);
+			break;
+		}
+		case 3:
+		{
+			operand = new TOperand<float>(value, FLOAT);
+			break;
+		}
+		case 4:
+		{
+			operand = new TOperand<double>(value, DOUBLE);
+			break;
+		}
+	}
+	return operand;
 }
 
-template <typename T>
 IOperand const * Toperand::operator-(IOperand const & src) const
 {
-
+	this->_value -= src.getValue();
+	return this;
 }
 
-template <typename T>
 IOperand const * Toperand::operator*(IOperand const & src) const
 {
-
+	this->_value *= src.getValue();
+	return this;
 }
 
-template <typename T>
 IOperand const * Toperand::operator/(IOperand const & src) const
 {
-
+	this->_value /= src.getValue();
+	return this;
 }
 
-template <typename T>
 IOperand const * Toperand::operator%(IOperand const & src) const
 {
-
+	this->_value %= src.getValue();
+	return this;
 }
 
-template <typename T>
 int TOperand::getPrecision(void) const 
 {
-	return
+	return this->_precision;
 }
 
 template <typename T>
 eOperandType TOperand::getType(void) const
 {
-
+	return this->_type;
 }
 
 template <typename T>
 T TOperand::getValue()
 {
-
+	return this->_value;
 }

@@ -15,18 +15,51 @@
 
 #include "IOperand.hpp"
 #include "TOperand.tpp"
+#include <limits>
+#include <iostream>
+#include "eOperandType"
+
+typedef struct 	s_operand {
+	eOperantType 	type;
+	std::string 	name;
+	int 			precision;
+	long			min;
+	long			max;
+}				t_operand;
+
+static t_operand myOperand[] {
+	{
+		INT8, "int8", -128, 127
+	},
+	{
+		INT16, "int16", 1, -32768, 32767
+	},
+	{
+		INT32, "int32", 2, -2147483648, 2147483647
+	}
+	{
+		FLOAT, "float", 3,
+		std::numeric_limits<float>::min(), std::numeric_limits<float::max()
+	},
+	{
+		DOUBLE, "double", 4,
+		std::numeric_limits<double>::min(), std::numeric_limits<double::max()
+	}
+};		
 
 template <typename T> class TOperand;
 
 class TOperand : public IOperand {
 
-	T _value;
+	T 				_value;
+	eOperantType 	_type;
+	int 			_precision;
 
 	TOperand();
 
 public:
 
-	Toperand(T value){};
+	Toperand(double value, eOperantType type);
 	TOperand(TOperand const & src);
 	~TOperand();
 

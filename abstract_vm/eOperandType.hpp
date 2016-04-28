@@ -14,11 +14,11 @@
 #define EOPERANDTYPE_HPP
 
 	enum Operand {
-	 Int8,
-	 Int16, 
-	 Int32, 
-	 Float, 
-	 Double 
+	 INT8,
+	 INT16, 
+	 INT32, 
+	 FLOAT, 
+	 DOUBLE 
 	};
 
 #endif
