@@ -29,7 +29,7 @@ typedef struct 	s_operand {
 
 static t_operand myOperand[] {
 	{
-		INT8, "int8", -128, 127
+		INT8, "int8", 0,-128, 127
 	},
 	{
 		INT16, "int16", 1, -32768, 32767
@@ -39,11 +39,11 @@ static t_operand myOperand[] {
 	}
 	{
 		FLOAT, "float", 3,
-		std::numeric_limits<float>::min(), std::numeric_limits<float::max()
+		std::numeric_limits<float>::min(), std::numeric_limits<float::max()>
 	},
 	{
 		DOUBLE, "double", 4,
-		std::numeric_limits<double>::min(), std::numeric_limits<double::max()
+		std::numeric_limits<double>::min(), std::numeric_limits<double::max()>
 	}
 };		
 
@@ -67,6 +67,8 @@ public:
 	virtual eOperandType getType( void ) const; // Type of the instance
 	T 			getValue();
 
+	IOperand const * createOperator(double value, short preicision);
+
 	TOperand & operator=(Toperand const & src);
 
 	virtual IOperand const * operator+( IOperand const & rhs ) const; // Sum
@@ -74,6 +76,7 @@ public:
 	virtual IOperand const * operator*( IOperand const & rhs ) const; // Product
 	virtual IOperand const * operator/( IOperand const & rhs ) const; // Quotient
 	virtual IOperand const * operator%( IOperand const & rhs ) const; // Modulo
+
 
 	virtual std::string const & toString( void ) const; // String representation of the instance
 
