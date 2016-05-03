@@ -13,6 +13,8 @@
 #ifndef IOPERAND_HPP
 #define IOPERAND_HPP
 
+#include "eOperandType.hpp"
+
 class IOperand {
 
 public:

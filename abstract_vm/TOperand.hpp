@@ -17,7 +17,7 @@
 #include "TOperand.tpp"
 #include <limits>
 #include <iostream>
-#include "eOperandType"
+#include "eOperandType.hpp"
 
 typedef struct 	s_operand {
 	eOperantType 	type;

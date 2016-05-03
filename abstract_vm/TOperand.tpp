@@ -11,7 +11,9 @@
 // ************************************************************************** //
 
 #include "TOperand.hpp"
-#include <cstdint.h>
+#include <cstdint>
+#include <string>
+#include "MyExceptions.hpp"
 
 TOperand::TOperand()
 {
@@ -26,7 +28,7 @@ TOperand::TOperand(double value, eOperandType type) : _value(value), _type(type)
 TOperand::TOperand(TOperand<T> const & src)
 {
 	*this = src;
-	return ;
+	return *this;
 }
 
 TOperand::~TOperand()
@@ -44,7 +46,12 @@ TOperand<T> & TOperand::operator=(TOperand<T> const &  src)
 	return *this;
 }
 
-IOperand const * Toperand::createOperator(double value, short precision)
+std::string const & TOperand::toString() const
+{
+	return std::to_string(this->_value);
+}
+
+IOperand const * TOperand::createOperator(double value, short precision)
 {
 	TOperand * operand = NULL;
 
@@ -56,31 +63,31 @@ IOperand const * Toperand::createOperator(double value, short precision)
 	{
 		case 0:
 		{
-			Operand myEnum = INT8;
+			eOperandType myEnum = INT8;
 			operand = new TOperand<int8_t>(value, myEnum);
 			break;
 		}
 		case 1:
 		{
-			Operand myEnum = INT16;
+			eOperandType myEnum = INT16;
 			operand = new TOperand<int16_t)>(value, myEnum);
 			break ;
 		}
 		case 2:
 		{
-			Operand myEnum = INT32;
+			eOperandType myEnum = INT32;
 			operand = new TOperand<int32_t>(value, myEnum);
 			break;
 		}
 		case 3:
 		{
-			Operand myEnum = FLOAT;
+			eOperandType myEnum = FLOAT;
 			operand = new TOperand<float>(value, myEnum);
 			break;
 		}
 		case 4:
 		{
-			Operand myEnum = DOUBLE;
+			eOperandType myEnum = DOUBLE;
 			operand = new TOperand<double>(value, myEnum);
 			break;
 		}
@@ -91,39 +98,47 @@ IOperand const * Toperand::createOperator(double value, short precision)
 IOperand const * TOperand::operator+(IOperand const & src) const
 {
 	TOperand * operand = NULL;
+	eOperandType type;
+
 	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
 	double value = src.getValue + this->_value;
-	operand = createOperator(value, myOperand[type].precision);
+	operand = createOperator(value, type);
 	return operand;
 }
 
 IOperand const * Toperand::operator-(IOperand const & src) const
 {
 	TOperand * operand = NULL;
+	eOperandType type;
+
 	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
 	double value = this->_value - src.getValue();
-	operand = createOperator(value, myOperand[type].precision);
+	operand = createOperator(value, type);
 	return operand;
 }
 
 IOperand const * Toperand::operator*(IOperand const & src) const
 {
 	TOperand * operand = NULL;
+	eOperandType type;
+
 	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
 	double value = src.getValue * this->_value;
-	operand = createOperator(value, myOperand[type].precision);
+	operand = createOperator(value, type);
 	return operand;
 }
 
 IOperand const * Toperand::operator/(IOperand const & src) const
 {
 	TOperand * operand = NULL;
+	eOperandType type;
+
 	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
 	if (src.getValue() == 0)
 		throw MathException("Division using 0");
 	else {
 		double value = this->_value / src.getValue();
-		operand = createOperator(value, myOperand[type].precision);
+		operand = createOperator(value, type);
 	}
 	return operand;
 }
@@ -131,12 +146,14 @@ IOperand const * Toperand::operator/(IOperand const & src) const
 IOperand const * Toperand::operator%(IOperand const & src) const
 {
 	TOperand * operand = NULL;
+	eOperandType type;
+
 	this->_precision >= src.getPrecision() ? type = this->_type ? type = src.getType();
 	if (src.getValue() == 0)
 		throw MathException("Modulo using 0");
 	else {
 		double value = this->_value % src.getValue();
-		operand = createOperator(value, myOperand[type].precision);
+		operand = createOperator(value, type);
 	}
 	return operand;
 }

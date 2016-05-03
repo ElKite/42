@@ -15,7 +15,8 @@
 
 #include <iostream>
 #include "IOperand.hpp"
-#include "eOperand.hpp"
+#include "eOperandType.hpp"
+#include "TOperand.hpp"
 
 class OperandFactory {
 
@@ -26,7 +27,7 @@ public:
 	OperandFactory(OperandFactory const & src)
 	~OperandFactory();
 
-	OperandFactory & operator=(OperandFactory & const src);
+//	OperandFactory & operator=(OperandFactory & const src);
 
 	IOperand const * createOperand(eOperandType type, std::string const & value) const;
 

@@ -14,7 +14,8 @@ CC = clang++
 NAME = abstract_vm
 CFLAGS = -Wall -Wextra -Werror
 OBJDIR = obj/
-SRCS = main.cpp
+SRCS = main.cpp \
+		OperandFactory.cpp \
 
 OBJS = $(addprefix $(OBJDIR),$(subst .cpp,.o,$(SRCS)))
 
