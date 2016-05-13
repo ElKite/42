@@ -12,7 +12,7 @@
 
 CC = clang++
 NAME = abstract_vm
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I /nfs/2014/v/vtarreau/.brew/include/
 OBJDIR = obj/
 SRCS = main.cpp \
 		OperandFactory.cpp \

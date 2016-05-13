@@ -24,7 +24,7 @@ public:
 
 
 	OperandFactory();
-	OperandFactory(OperandFactory const & src)
+	OperandFactory(OperandFactory const & src);
 	~OperandFactory();
 
 //	OperandFactory & operator=(OperandFactory & const src);

@@ -75,7 +75,7 @@ IOperand const * createInt8( std::string const & value ) const
 {
 	double myValue;
     try {
-        myValue = boost::lexical_cast<double>(value);
+        myValue = boost::lexical_cast<int8_t>(value);
     } catch(bad_lexical_cast&) {
 
     }
@@ -86,7 +86,7 @@ IOperand const * createInt16( std::string const & value ) const
 {
 	double myValue;
     try {
-        myValue = boost::lexical_cast<double>(value);
+        myValue = boost::lexical_cast<int16_t>(value);
     } catch(bad_lexical_cast&) {
 
     }
@@ -97,7 +97,7 @@ IOperand const * createInt32( std::string const & value ) const
 {
 	double myValue;
     try {
-        myValue = boost::lexical_cast<double>(value);
+        myValue = boost::lexical_cast<int32_t>(value);
     } catch(bad_lexical_cast&) {
 
     }
@@ -108,7 +108,7 @@ IOperand const * createFloat( std::string const & value ) const
 {
 	double myValue;
     try {
-        myValue = boost::lexical_cast<double>(value);
+        myValue = boost::lexical_cast<float>(value);
     } catch(bad_lexical_cast&) {
 
     }
