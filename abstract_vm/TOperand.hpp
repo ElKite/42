@@ -15,10 +15,12 @@
 
 #include "IOperand.hpp"
 #include <limits>
+#include <math.h>
 #include <iostream>
 #include "eOperandType.hpp"
 #include <cstdint>
 #include <string>
+#include <boost/lexical_cast.hpp>
 #include "MyExceptions.hpp"
 
 typedef struct 	s_operand {
@@ -48,190 +50,164 @@ template <typename T> class TOperand : public IOperand {
 
 public:
 
-	/*Toperand(double value, eOperantType type);
-	TOperand(TOperand const & src);
-	~TOperand();
-
-	virtual int getPrecision( void ) const; // Precision of the type of the instance
-	virtual eOperandType getType( void ) const; // Type of the instance
-	T 			getValue();
-
-	IOperand const * createOperator(double value, short preicision);
-
-	TOperand & operator=(Toperand const & src);
-
-	virtual IOperand const * operator+( IOperand const & rhs ) const; // Sum
-	virtual IOperand const * operator-( IOperand const & rhs ) const; // Difference
-	virtual IOperand const * operator*( IOperand const & rhs ) const; // Product
-	virtual IOperand const * operator/( IOperand const & rhs ) const; // Quotient
-	virtual IOperand const * operator%( IOperand const & rhs ) const; // Modulo
-
-
-	virtual std::string const & toString( void ) const; // String representation of the instance*/
-
-
-
-TOperand()
-{
-	return ;
-}
-
-TOperand(double value, eOperandType type) : _value(value), _type(type)
-{
-	return ;
-}
-
-TOperand(TOperand<T> const & src)
-{
-	*this = src;
-	return *this;
-}
-
-~TOperand()
-{
-	return ;
-}
-
-TOperand<T> & operator=(TOperand<T> const &  src)
-{
-	this->_value = src.getValue();
-	this->_precision = src.getPrecision();
-	this->_type = src.getType();
-	return *this;
-}
-
-std::string const & toString() const
-{
-	return std::to_string(this->_value);
-}
-
-IOperand const * createOperator(double value, short precision)
-{
-	TOperand * operand = NULL;
-
-	if (value > myOperand[precision].max)
-		throw MathException("Overflow : " + myOperand[precision].name);
-	else if (value > myOperand[precision].min)
-		throw MathException("Underflow : " + myOperand[precision].name);
-	switch(precision)
+	TOperand() 
 	{
-		case 0:
+		return ;
+	}
+
+	TOperand(double value, eOperandType type) : _value(value), _type(type)
+	{
+		return ;
+	}
+
+	TOperand(TOperand<T> const & src)
+	{
+		*this = src;
+		return *this;
+	}
+
+	~TOperand()
+	{
+		return ;
+	}
+
+	TOperand<T> & operator=(TOperand<T> const &  src)
+	{
+		this->_value = src.getValue();
+		this->_precision = src.getPrecision();
+		this->_type = src.getType();
+		return *this;
+	}
+
+	std::string const & toString() const
+	{
+		std::ostringstream sstream;
+		sstream << this->_value;
+		std::string * s = new std::string(sstream.str());
+		return *s;
+	}
+
+	IOperand * createOperator(double value, short precision) const
+	{
+		if (value > myOperand[precision].max)
+			throw MathException("Overflow : " + myOperand[precision].name);
+		else if (value > myOperand[precision].min)
+			throw MathException("Underflow : " + myOperand[precision].name);
+		switch(precision)
 		{
-			eOperandType myEnum = INT8;
-			operand = new TOperand<int8_t>(value, myEnum);
-			break;
-		}
-		case 1:
-		{
-			eOperandType myEnum = INT16;
-			operand = new TOperand<int16_t>(value, myEnum);
-			break ;
-		}
-		case 2:
-		{
-			eOperandType myEnum = INT32;
-			operand = new TOperand<int32_t>(value, myEnum);
-			break;
-		}
-		case 3:
-		{
-			eOperandType myEnum = FLOAT;
-			operand = new TOperand<float>(value, myEnum);
-			break;
-		}
-		case 4:
-		{
-			eOperandType myEnum = DOUBLE;
-			operand = new TOperand<double>(value, myEnum);
-			break;
+			case 0:
+			{
+				eOperandType myEnum = INT8;
+				IOperand * operand = new TOperand<int8_t>(value, myEnum);
+				return operand;
+				break;
+			}
+			case 1:
+			{
+				eOperandType myEnum = INT16;
+				IOperand * operand = new TOperand<int16_t>(value, myEnum);
+				return operand;
+				break ;
+			}
+			case 2:
+			{
+				eOperandType myEnum = INT32;
+				IOperand * operand = new TOperand<int32_t>(value, myEnum);
+				return operand;
+				break;
+			}
+			case 3:
+			{
+				eOperandType myEnum = FLOAT;
+				IOperand * operand = new TOperand<float>(value, myEnum);
+				return operand;
+				break;
+			}
+			case 4:
+			{
+				eOperandType myEnum = DOUBLE;
+				IOperand * operand = new TOperand<double>(value, myEnum);
+				return operand;
+				break;
+			}
 		}
 	}
-	return operand;
-}
 
-IOperand const * operator+(IOperand const & rhs) const
-{
-	TOperand src(static_cast<TOperand>(rhs));
-	TOperand * operand = NULL;
-	eOperandType type;
+	IOperand const * operator+(IOperand const & rhs) const
+	{
+		eOperandType type;
 
-	this->_precision >= src.getPrecision() ? type = this->_type : type = src.getType();
-	double value = src.getValue() + this->_value;
-	operand = createOperator(value, type);
-	return operand;
-}
-
-IOperand const * operator-(IOperand const & rhs) const
-{
-	TOperand * operand = NULL;
-	TOperand src(static_cast<TOperand>(rhs));
-	eOperandType type;
-
-	this->_precision >= src.getPrecision() ? type = this->_type : type = src.getType();
-	double value = this->_value - src.getValue();
-	operand = createOperator(value, type);
-	return operand;
-}
-
-IOperand const * operator*(IOperand const & rhs) const
-{
-	TOperand src(static_cast<TOperand>(rhs));
-	TOperand * operand = NULL;
-	eOperandType type;
-
-	this->_precision >= src.getPrecision() ? type = this->_type : type = src.getType();
-	double value = src.getValue() * this->_value;
-	operand = createOperator(value, type);
-	return operand;
-}
-
-IOperand const * operator/(IOperand const & rhs) const
-{
-	TOperand * operand = NULL;
-	TOperand src(static_cast<TOperand>(rhs));
-	eOperandType type;
-
-	this->_precision >= src.getPrecision() ? type = this->_type : type = src.getType();
-	if (src.getValue() == 0)
-		throw MathException("Division using 0");
-	else {
-		double value = this->_value / src.getValue();
-		operand = createOperator(value, type);
+		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		double value = rhs.getValue() + this->_value;
+		IOperand * operand = createOperator(value, type);
+		return operand;
 	}
-	return operand;
-}
 
-IOperand const * operator%(IOperand const & rhs) const
-{
-	TOperand * operand = NULL;
-	TOperand src(static_cast<TOperand>(rhs));
-	eOperandType type;
+	IOperand const * operator-(IOperand const & rhs) const
+	{
+		eOperandType type;
 
-	this->_precision >= src.getPrecision() ? type = this->_type : type = src.getType();
-	if (src.getValue() == 0)
-		throw MathException("Modulo using 0");
-	else {
-		double value = this->_value % src.getValue();
-		operand = createOperator(value, type);
+		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		double value = this->_value - rhs.getValue();
+		IOperand * operand = createOperator(value, type);
+		return operand;
 	}
-	return operand;
-}
 
-int getPrecision(void) const 
-{
-	return this->_precision;
-}
+	IOperand const * operator*(IOperand const & rhs) const
+	{
+		eOperandType type;
 
-eOperandType getType(void) const
-{
-	return this->_type;
-}
+		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		double value = rhs.getValue() * this->_value;
+		IOperand * operand = createOperator(value, type);
+		return operand;
+	}
+
+	IOperand const * operator/(IOperand const & rhs) const
+	{
+		IOperand * operand;
+		eOperandType type;
+
+		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		if (rhs.getValue() == 0)
+			throw MathException("Division using 0");
+		else {
+			double value = this->_value / rhs.getValue();
+			operand = createOperator(value, type);
+		}
+		return operand;
+	}
+
+	IOperand const * operator%(IOperand const & rhs) const
+	{
+		IOperand * operand;
+		eOperandType type;
+
+		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		if (rhs.getValue() == 0)
+			throw MathException("Modulo using 0");
+		else {
+			double value = fmod(this->_value,rhs.getValue());
+			operand = createOperator(value, type);
+		}
+		return operand;
+	}
+
+	int getPrecision(void) const 
+	{
+		return this->_precision;
+	}
+
+	eOperandType getType(void) const
+	{
+		return this->_type;
+	}
 
 
-T getValue()
-{
-	return this->_value;
-}
+	double getValue() const
+	{
+		return this->_value;
+	}
 
 
 };
