@@ -18,7 +18,8 @@
 
 class MathException : public std::exception
 {
-	std::string _error;
+
+	const char * _error;
 
 	MathException() throw()
 	{
@@ -27,8 +28,9 @@ class MathException : public std::exception
 
 public:
 
-	MathException(std::string s) throw() :_error(s)
+	MathException(std::string msg) throw()
 	{
+		this->_error = msg.c_str();
 		return ;
 	}
 
@@ -46,7 +48,7 @@ public:
 
 class InstructionException : public std::exception
 {
-	std::string _error;
+	const char * _error;
 
 	InstructionException() throw()
 	{
@@ -55,8 +57,9 @@ class InstructionException : public std::exception
 
 public:
 
-	InstructionException(std::string s) throw() :_error(s)
+	InstructionException(std::string s) throw()
 	{
+		this->_error = s.c_str();
 		return ;
 	}
 

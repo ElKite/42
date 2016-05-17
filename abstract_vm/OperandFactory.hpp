@@ -26,6 +26,8 @@ class OperandFactory {
 	IOperand const * createFloat( std::string const & value ) const;
 	IOperand const * createDouble( std::string const & value ) const;
 
+	void  checkValue(eOperandType type, std::string const & value) const;
+
 public:
 
 

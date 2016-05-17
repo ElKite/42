@@ -36,7 +36,7 @@ static t_operand myOperand[] =
 	{	INT8, "int8", 0,-128, 127 },
 	{	INT16, "int16", 1, -32768, 32767 },
 	{	INT32, "int32", 2, -2147483648, 2147483647 },
-	{	FLOAT, "float", 3, std::numeric_limits<float>::min(), std::numeric_limits<float>::max() },
+	{	FLOAT, "float", 3, std::numeric_limits<float>::min(), std::numeric_limits<float>::max()},
 	{	DOUBLE, "double", 4, std::numeric_limits<double>::min(), std::numeric_limits<double>::max() },
 };		
 
@@ -57,6 +57,14 @@ public:
 
 	TOperand(double value, eOperandType type) : _value(value), _type(type)
 	{
+		for (int i = 0; i <= 4; i++)
+		{
+			if (myOperand[i].type == this->_type)
+			{
+				this->_precision = myOperand[i].precision;
+				break ;
+			}
+		}
 		return ;
 	}
 
@@ -89,48 +97,45 @@ public:
 
 	IOperand * createOperator(double value, short precision) const
 	{
+		IOperand * operand = NULL;
 		if (value > myOperand[precision].max)
 			throw MathException("Overflow : " + myOperand[precision].name);
-		else if (value > myOperand[precision].min)
+		else if (value < myOperand[precision].min)
 			throw MathException("Underflow : " + myOperand[precision].name);
 		switch(precision)
 		{
 			case 0:
 			{
 				eOperandType myEnum = INT8;
-				IOperand * operand = new TOperand<int8_t>(value, myEnum);
-				return operand;
+				operand = new TOperand<int8_t>(value, myEnum);
 				break;
 			}
 			case 1:
 			{
 				eOperandType myEnum = INT16;
-				IOperand * operand = new TOperand<int16_t>(value, myEnum);
-				return operand;
+				operand = new TOperand<int16_t>(value, myEnum);
 				break ;
 			}
 			case 2:
 			{
 				eOperandType myEnum = INT32;
-				IOperand * operand = new TOperand<int32_t>(value, myEnum);
-				return operand;
+				operand = new TOperand<int32_t>(value, myEnum);
 				break;
 			}
 			case 3:
 			{
 				eOperandType myEnum = FLOAT;
-				IOperand * operand = new TOperand<float>(value, myEnum);
-				return operand;
+				operand = new TOperand<float>(value, myEnum);
 				break;
 			}
 			case 4:
 			{
 				eOperandType myEnum = DOUBLE;
-				IOperand * operand = new TOperand<double>(value, myEnum);
-				return operand;
+				operand = new TOperand<double>(value, myEnum);
 				break;
 			}
 		}
+		return operand;
 	}
 
 	IOperand const * operator+(IOperand const & rhs) const
