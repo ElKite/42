@@ -27,8 +27,8 @@ typedef struct 	s_operand {
 	eOperandType 	type;
 	std::string 	name;
 	int 			precision;
-	long			min;
-	long			max;
+	long double			min;
+	long double			max;
 }				t_operand;
 
 static t_operand myOperand[] = 
@@ -36,13 +36,11 @@ static t_operand myOperand[] =
 	{	INT8, "int8", 0,-128, 127 },
 	{	INT16, "int16", 1, -32768, 32767 },
 	{	INT32, "int32", 2, -2147483648, 2147483647 },
-	{	FLOAT, "float", 3, std::numeric_limits<float>::min(), std::numeric_limits<float>::max()},
-	{	DOUBLE, "double", 4, std::numeric_limits<double>::min(), std::numeric_limits<double>::max() },
+	{	FLOAT, "float", 3, std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max()},
+	{	DOUBLE, "double", 4, std::numeric_limits<double>::lowest(), std::numeric_limits<double>::max() },
 };		
 
 template <typename T> class TOperand : public IOperand {
-
-//class TOperand : public IOperand {
 
 	T 				_value;
 	eOperandType 	_type;
@@ -99,9 +97,9 @@ public:
 	{
 		IOperand * operand = NULL;
 		if (value > myOperand[precision].max)
-			throw MathException("Overflow : " + myOperand[precision].name);
+			throw MathException("Overflow : " + boost::lexical_cast<std::string>(value) + " " +  myOperand[precision].name);
 		else if (value < myOperand[precision].min)
-			throw MathException("Underflow : " + myOperand[precision].name);
+			throw MathException("Underflow : " + boost::lexical_cast<std::string>(value) + " " + myOperand[precision].name);
 		switch(precision)
 		{
 			case 0:
