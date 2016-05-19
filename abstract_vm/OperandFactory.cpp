@@ -30,10 +30,11 @@ OperandFactory::~OperandFactory()
 	return ;
 }
 
-/*OperandFactory & OperandFactory::operator=(OperandFactory & const src)
+OperandFactory & OperandFactory::operator=(OperandFactory const & src)
 {
-
-}*/
+	(void)src;
+	return *this;
+}
 
 void  OperandFactory::checkValue(eOperandType type, std::string const & value) const
 {

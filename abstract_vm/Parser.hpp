@@ -1,31 +1,36 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Instructions.hpp                                   :+:      :+:    :+:   //
+//   Parser.hpp                                         :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2016/05/18 15:36:51 by vtarreau          #+#    #+#             //
-//   Updated: 2016/05/18 15:36:52 by vtarreau         ###   ########.fr       //
+//   Created: 2016/05/19 15:53:42 by vtarreau          #+#    #+#             //
+//   Updated: 2016/05/19 15:53:43 by vtarreau         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef INSTRUCTIONS_HPP
-#define INSTRUCTIONS_HPP
+#ifndef PARSER_HPP
+#define PARSER_HPP
 
-#include "TOperand.hpp"
+#include "Instructions.hpp"
+#include <iostream>
+#include <vector>
 
-class Instructions {
-
-http://www.drdobbs.com/cpp/the-spirit-parser-library-inline-parsing/184401692?pgno=1
+class Parser {
 
 public:
 
-	Instructions();
-	Instructions(Instructions const & Instructions);
-	~Instructions();
+	Parser();
+	Parser(Parser const & src);
+	~Parser();
 
-	Instructions & operator=(Instructions & const src);
+
+
+	void readfile();
+	std::vector<std::string> split(const std::string & s, char delim);
+	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
+	Parser & operator=(Parser const & src);
 
 };
 
