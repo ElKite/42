@@ -30,5 +30,6 @@ Instructions::~Instructions()
 
 Instructions &  Instructions::operator=(Instructions const & src)
 {
+	(void) src;
 	return *this;
 }

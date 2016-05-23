@@ -15,6 +15,8 @@
 
 #include "Instructions.hpp"
 #include <iostream>
+#include <string>
+#include <fstream>
 #include <vector>
 
 class Parser {
@@ -27,7 +29,8 @@ public:
 
 
 
-	void readfile();
+	void readfile(std::string filename);
+	void check_instructions(Instructions const & Instructions, std::vector<std::string> elems);
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
 	Parser & operator=(Parser const & src);

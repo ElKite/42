@@ -14,18 +14,34 @@
 #define INSTRUCTIONS_HPP
 
 #include "TOperand.hpp"
+#include <boost/assign/list_of.hpp>
+#include <iostream>
+#include <vector>
+
+#define INSTRUCTIONS_COUNT 11
+
+std::string instructions_list[] = {
+	"push",
+	"pop",
+	"dump",
+	"assert",
+	"add",
+	"sub"
+	"mul",
+	"div",
+	"mod",
+	"print",
+	"exit"};
 
 class Instructions {
-
-http://www.drdobbs.com/cpp/the-spirit-parser-library-inline-parsing/184401692?pgno=1
 
 public:
 
 	Instructions();
-	Instructions(Instructions const & Instructions);
+	Instructions(Instructions  const & Instructions);
 	~Instructions();
 
-	Instructions & operator=(Instructions & const src);
+	Instructions & operator=(Instructions const & src);
 
 };
 

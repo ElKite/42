@@ -19,11 +19,11 @@ Parser::Parser()
 
 Parser::Parser(Parser const & src)
 {
-	*this = src
+	*this = src;
 	return ;
 }
 
-Parrser::~Parser()
+Parser::~Parser()
 {
 	return ;
 }
@@ -47,7 +47,7 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
 
 std::vector<std::string> Parser::split(const std::string & s, char delim)
 {
-	std::vecotr<std::string> elems;
+	std::vector<std::string> elems;
 	
 	split(s, delim, elems);
 	return elems;
@@ -55,13 +55,28 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
-	Instructions * instructions = new Instructions();
-	std::string line;
 
-	while (std::getline(src, line))
+	Instructions * instructions = new Instructions();
+	std::ifstream infile(filename);
+	std::string line;
+	std::vector<std::string> elems;
+
+	while (std::getline(infile, line))
 	{
  		if (line.at(0) == ';')
  			continue ;
+ 		elems = split(line, ' ');
+ 		check_instructions(*instructions, elems);
+	}
+}
 
+void Parser::check_instructions(Instructions const & instructions, std::vector<std::string> elems)
+{
+	(void) instructions;
+	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
+	{
+		if (instructions_list[i] == elems.at(0))
+			std::cout << elems.at(0) << std::endl;
+			//instruction list function
 	}
 }
