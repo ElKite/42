@@ -11,6 +11,7 @@
 // ************************************************************************** //
 
 #include "Parser.hpp"
+#include <regex>
 
 Parser::Parser()
 {
@@ -63,11 +64,16 @@ void Parser::readfile(std::string filename)
 
 	while (std::getline(infile, line))
 	{
- 		if (line.at(0) == ';')
- 			continue ;
- 		elems = split(line, ' ');
+ 		check_line(line);
  		check_instructions(*instructions, elems);
 	}
+}
+
+void Parser::check_line(std::string line)
+{
+	regex standard = "[pop|dump|add|sub|mul|div|mod|print|exit]";
+	regex withValue = "[push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)]";
+
 }
 
 void Parser::check_instructions(Instructions const & instructions, std::vector<std::string> elems)
