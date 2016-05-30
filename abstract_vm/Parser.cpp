@@ -56,7 +56,6 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
-
 	Instructions * instructions = new Instructions();
 	std::ifstream infile(filename);
 	std::string line;
@@ -64,25 +63,47 @@ void Parser::readfile(std::string filename)
 
 	while (std::getline(infile, line))
 	{
- 		check_line(line);
- 		check_instructions(*instructions, elems);
+ 		check_line(line, *instructions);
 	}
 }
 
-void Parser::check_line(std::string line)
+void Parser::check_line(std::string line, Instructions const & instructions)
 {
-	regex standard = "[pop|dump|add|sub|mul|div|mod|print|exit]";
-	regex withValue = "[push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)]";
+	regex standard_comment = "((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)";
+	regex standard_nocomment = "^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$";
 
+	regex withValue_comment = "([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)";
+	regex withValue_nocomment = "^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$";
+
+	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
+		check_argumented_instructions(line, instructions);
+	else
+		//throw exception
+	if (std::regex_match(line, withValue_nocomment) || std::regex_match(line, withValue_comment))
+		check_instructions(line, instructions);
+	else
+		//throw exception
 }
 
-void Parser::check_instructions(Instructions const & instructions, std::vector<std::string> elems)
+void Parser::check_instructions(Instructions const & instructions, std::string line)
 {
-	(void) instructions;
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
-		if (instructions_list[i] == elems.at(0))
-			std::cout << elems.at(0) << std::endl;
-			//instruction list function
+		if (instructions_list[i] == line)
+		{
+			switch (i)
+			{
+				case 0:
+				{
+
+					break ;
+				}
+			}	
+		}
 	}
+}
+
+void Parser::check_argumented_instructions(Instructions const & instructions, std::string line)
+{
+	
 }
