@@ -35,7 +35,7 @@ Parser & Parser::operator=(Parser const & src)
 	return *this;
 }
 
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) 
+std::vector<std::string> & Parser::split(const std::string &s, char delim, std::vector<std::string> &elems) 
 {
     std::stringstream ss(s);
     std::string item;
@@ -56,6 +56,7 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
+	//check if file or direct input
 	Instructions * instructions = new Instructions();
 	std::ifstream infile(filename);
 	std::string line;
@@ -69,19 +70,25 @@ void Parser::readfile(std::string filename)
 
 void Parser::check_line(std::string line, Instructions const & instructions)
 {
-	regex standard_comment = "((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)";
-	regex standard_nocomment = "^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$";
+	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
+	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
-	regex withValue_comment = "([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)";
-	regex withValue_nocomment = "^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$";
+	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
+	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$");
+
+	//syntax error
+	//instructions unknown
+	//type unknown
 
 	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
-		check_argumented_instructions(line, instructions);
+		check_argumented_instructions(instructions, line);
 	else
+		std::cout << "error matching regex" << std::endl;
 		//throw exception
-	if (std::regex_match(line, withValue_nocomment) || std::regex_match(line, withValue_comment))
-		check_instructions(line, instructions);
-	else
+	if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
+		std::cout << "error matching regex 2" << std::endl;
+		check_instructions(instructions, line);
+	//else
 		//throw exception
 }
 
@@ -93,11 +100,46 @@ void Parser::check_instructions(Instructions const & instructions, std::string l
 		{
 			switch (i)
 			{
-				case 0:
-				{
-
+				case 1:
+				{	
+					instructions.pop();
 					break ;
 				}
+				case 2:
+				{	
+					instructions.dump();
+					break ;
+				}
+				case 3:
+				{	
+					instructions.add();
+					break ;
+				}
+				case 4:
+				{	
+					instructions.mul();
+					break ;
+				}
+				case 5:
+				{	
+					instructions.div();
+					break ;
+				}
+				case 6:
+				{	
+					instructions.mod();
+					break ;
+				}
+				case 7:
+				{	
+					instructions.print();
+					break ;
+				}
+				case 8:
+				{	
+					instructions.exit();
+					break ;
+				}														
 			}	
 		}
 	}
@@ -105,5 +147,12 @@ void Parser::check_instructions(Instructions const & instructions, std::string l
 
 void Parser::check_argumented_instructions(Instructions const & instructions, std::string line)
 {
-	
+	std::vector<std::string> elems = split(line, ' ');
+	if (elems.at(0) == instructions_list[0])
+	{
+		instructions.push(elems.at(1));
+	} else if (elems.at(0) == instructions_list[3])
+	{
+		instructions.assertt(elems.at(1));
+	}
 }

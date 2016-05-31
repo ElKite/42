@@ -10,22 +10,12 @@
 //                                                                            //
 // ************************************************************************** //
 
-#include "TOperand.hpp"
-#include "OperandFactory.hpp"
-#include "MyExceptions.hpp"
+#include "Parser.cpp"
 
 #include <iostream>
 
 int main()
 {
-	OperandFactory * factory = new OperandFactory();
-	IOperand const * a = factory->createOperand(INT32, "3");
-	IOperand const * b = factory->createOperand(FLOAT, "127");
-	//IOperand const * c = factory->createOperand(FLOAT, "3");
-
-	std::cout << a->getPrecision() <<  " ; " << a->getValue() << " ; " << a->getType() <<std::endl;
-	std::cout << b->getPrecision() <<  " ; " << b->getValue() << " ; " << b->getType() <<std::endl;
-	IOperand const * c  = *a - *b;
-	std::cout << c->getPrecision() <<  " ; " << c->getValue() << " ; " << c->getType() <<std::endl;
-	return 0;
+	Parser * parser = new Parser();
+	parser->readfile("example.txt");
 }

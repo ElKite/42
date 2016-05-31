@@ -41,6 +41,19 @@ public:
 	Instructions(Instructions  const & Instructions);
 	~Instructions();
 
+	void pop() const;
+	void dump() const;
+	void add() const;
+	void sub() const ;
+	void mul() const;
+	void div() const;
+	void mod() const;
+	void print() const;
+	void exit() const;
+
+	void push(std::string value) const;
+	void assertt(std::string value) const;
+
 	Instructions & operator=(Instructions const & src);
 
 };

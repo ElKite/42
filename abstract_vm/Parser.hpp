@@ -31,6 +31,7 @@ public:
 
 	void readfile(std::string filename);
 	void check_instructions(Instructions const & Instructions, std::string line);
+	void check_argumented_instructions(Instructions const & Instructions, std::string line);
 	void check_line(std::string line, Instructions const & instructions);
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);

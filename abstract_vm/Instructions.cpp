@@ -33,3 +33,58 @@ Instructions &  Instructions::operator=(Instructions const & src)
 	(void) src;
 	return *this;
 }
+
+void Instructions::pop() const
+{
+	std::cout << "pop" << std::endl;
+}
+
+void Instructions::dump() const 
+{
+	std::cout << "dump" << std::endl;
+}
+
+void Instructions::add() const
+{
+	std::cout << "add" << std::endl;
+}
+
+void Instructions::sub() const
+{
+	std::cout << "sub" << std::endl;
+}
+
+void Instructions::mul() const 
+{
+	std::cout << "mul" << std::endl;
+}
+
+void Instructions::div() const
+{
+	std::cout << "div" << std::endl;
+}
+
+ void Instructions::mod() const
+{
+	std::cout << "mod" << std::endl;
+}
+
+void Instructions::print() const
+{
+	std::cout << "print" << std::endl;
+}
+
+void Instructions::exit() const
+{
+	std::cout << "exit" << std::endl;
+}
+
+void Instructions::push(std::string value) const
+{
+	std::cout << "push " << value << std::endl;
+}
+
+void Instructions::assertt(std::string value) const
+{
+	std::cout << "assert " << value << std::endl;
+}
