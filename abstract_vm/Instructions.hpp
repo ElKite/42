@@ -20,13 +20,13 @@
 
 #define INSTRUCTIONS_COUNT 11
 
-std::string instructions_list[] = {
+static std::string instructions_list[] = {
 	"push",
 	"pop",
 	"dump",
 	"assert",
 	"add",
-	"sub"
+	"sub",
 	"mul",
 	"div",
 	"mod",

@@ -10,8 +10,7 @@
 //                                                                            //
 // ************************************************************************** //
 
-#include "Parser.cpp"
-
+#include "Parser.hpp"
 #include <iostream>
 
 int main()
