@@ -35,6 +35,9 @@ static std::string instructions_list[] = {
 
 class Instructions {
 
+	IOperand * stack;
+	int top = 0;
+
 public:
 
 	Instructions();

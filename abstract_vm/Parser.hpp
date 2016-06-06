@@ -21,6 +21,8 @@
 
 class Parser {
 
+	Instructions * instructions;
+
 public:
 
 	Parser();
@@ -30,9 +32,9 @@ public:
 
 
 	void readfile(std::string filename);
-	void check_instructions(Instructions const & Instructions, std::string line);
-	void check_argumented_instructions(Instructions const & Instructions, std::string line);
-	void check_line(std::string line, Instructions const & instructions);
+	void check_instructions(std::string line);
+	void check_argumented_instructions(std::string line);
+	void check_line(std::string line);
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
 	Parser & operator=(Parser const & src);

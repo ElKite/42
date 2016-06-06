@@ -14,6 +14,7 @@
 
 Instructions::Instructions()
 {
+	stack = new IOperand[255]
 	return ;
 }
 
@@ -25,6 +26,7 @@ Instructions::Instructions(Instructions const & src)
 
 Instructions::~Instructions()
 {
+	delete [] stack;
 	return ;
 }
 
@@ -79,12 +81,14 @@ void Instructions::exit() const
 	std::cout << "exit" << std::endl;
 }
 
-void Instructions::push(std::string value) const
+void Instructions::push(eOperandType type, std::string value) const
 {
-	std::cout << "push " << value << std::endl;
+	OperandFactory * factory = new OperandFactory();
+	stack[top] = factory->createOperand(type, value);
+	top++;
 }
 
-void Instructions::assertt(std::string value) const
+void Instructions::assertt(eOperandType type, std::string value) const
 {
 	std::cout << "assert " << value << std::endl;
-}
+} 

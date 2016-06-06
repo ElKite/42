@@ -42,12 +42,10 @@ void  OperandFactory::checkValue(eOperandType type, std::string const & value) c
     try {
         d = boost::lexical_cast<double>(value);
     } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR CAST VALUE TO DOUBLE" << std::endl;
+    	std::cout << "ERROR CAST VALUE STRING TO DOUBLE" << std::endl;
     }
 	for (int i = 0; i <= 4 ; i++ )
 	{
-		std::cout << "MAX " << myOperand[i].name << " " << myOperand[i].max << std::endl;
-		std::cout << "MIN " << myOperand[i].name << " " << myOperand[i].min << std::endl;
 		if (myOperand[i].type == type)
 		{
 			if (d > myOperand[i].max)

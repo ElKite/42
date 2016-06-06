@@ -11,10 +11,12 @@
 // ************************************************************************** //
 
 #include "Parser.hpp"
+#include "eOperandType.hpp"
 #include <regex>
 
 Parser::Parser()
 {
+	instructions = new Instructions();
 	return ;
 }
 
@@ -56,8 +58,6 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
-	//check if file or direct input
-	Instructions * instructions = new Instructions();
 	std::ifstream infile(filename);
 	std::string line;
 	std::vector<std::string> elems;
@@ -71,7 +71,7 @@ void Parser::readfile(std::string filename)
 	}
 }
 
-void Parser::check_line(std::string line, Instructions const & instructions)
+void Parser::check_line(std::string line)
 {
 	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
@@ -97,7 +97,7 @@ void Parser::check_line(std::string line, Instructions const & instructions)
 		//throw exception
 }
 
-void Parser::check_instructions(Instructions const & instructions, std::string line)
+void Parser::check_instructions(std::string line)
 {
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
@@ -157,16 +157,29 @@ void Parser::check_instructions(Instructions const & instructions, std::string l
 	}
 }
 
-void Parser::check_argumented_instructions(Instructions const & instructions, std::string line)
+void Parser::check_argumented_instructions(std::string line)
 {
 	std::vector<std::string> elems = split(line, ' ');
-//	std::cout << "COMPARAISON" << line << " / " << instructions_list[0] << std::endl;
-///	std::cout << "COMPARAISON" << line << " / " << instructions_list[1] << std::endl;
+	std::vector<std::string> type = split(elems.at(1), '('));
+	std::vector<std::string> value = split(type.at(1), ')'));
+	eOperandType myType;
+
+	if (type.at(0) == "int8")
+		myType = INT8;
+	else if (type.at(0) == "int16")
+		myType = INT16;
+	else if (type.at(0) == "int32")
+		myType = INT32;
+	else if (type.at(0) == "double")
+		myType = DOUBLE;
+	else if (type.at(0) == "float")
+		myType = FLOAT;
+
 	if (elems.at(0) == instructions_list[0])
 	{
-		instructions.push(elems.at(1));
+		instructions.push(myType, value.at(0));
 	} else if (elems.at(0) == instructions_list[3])
 	{
-		instructions.assertt(elems.at(1));
+		instructions.assertt(myType, value.at(0));
 	}
 }
