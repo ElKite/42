@@ -38,6 +38,8 @@ class Instructions {
 	IOperand * stack;
 	int top = 0;
 
+	IOperand * newStack();
+
 public:
 
 	Instructions();

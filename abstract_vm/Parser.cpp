@@ -79,6 +79,8 @@ void Parser::check_line(std::string line)
 	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
 	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$");
 
+	\w
+
 //^(((push)|(assert))+[ \t]+((int8[(])|(int16[(])|(int32[(])|(float[(])|(double[(]))+-?[0-9]+[)])$
 
 	//syntax error
@@ -101,7 +103,6 @@ void Parser::check_instructions(std::string line)
 {
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
-		//std::cout << "COMPARAISON " << line << " / " << instructions_list[i] << std::endl;
 		if (instructions_list[i] == line)
 		{
 			switch (i)
