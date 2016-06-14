@@ -11,10 +11,13 @@
 // ************************************************************************** //
 
 #include "Instructions.hpp"
+#include <boost/lexical_cast.hpp>
+
 
 Instructions::Instructions()
 {
-	stack = new IOperand[255]
+	factory = new OperandFactory();
+	//top = 0;
 	return ;
 }
 
@@ -26,7 +29,6 @@ Instructions::Instructions(Instructions const & src)
 
 Instructions::~Instructions()
 {
-	delete [] stack;
 	return ;
 }
 
@@ -36,101 +38,103 @@ Instructions &  Instructions::operator=(Instructions const & src)
 	return *this;
 }
 
-void Instructions::pop() const
+void Instructions::pop() 
 {
 	std::cout << "pop" << std::endl;
+	stack.pop_back();
 }
 
-void Instructions::dump() const 
+void Instructions::dump()  
 {
 	std::cout << "dump" << std::endl;
-	for (int i = top; i > 0; i--)
+	for (int i = stack.size(); i > 0; i--)
 	{
-		std::cout << stack[top]->toString() << std::endl;
+		std::cout << stack[i]->toString() << std::endl;
 	}
 }
 
-void Instructions::add() const
+void Instructions::add() 
 {
 	std::cout << "add" << std::endl;
-	if (top >= 1)
+	if (stack.size() >= 1)
 	{
-		stack[top - 1] = stack[top] + stack[top -1];
-		top--;
+		stack[stack.size() - 1] = stack[stack.size()] + stack[stack.size() -1];
+		//top--;
 	} else
 		throw MathException("Not enough values on the stack to execute 'add' instruction");
 
 }
 
-void Instructions::sub() const
+void Instructions::sub() 
 {
 	std::cout << "sub" << std::endl;
-	if (top >= 1)
+	if (stack.size() >= 1)
 	{
-		stack[top - 1] = stack[top] - stack[top -1];
-		top--;
+		stack[stack.size() - 1] = stack[stack.size()] - stack[stack.size() -1];
+		//top--;
 	} else
 		throw MathException("Not enough values on the stack to execute 'sub' instruction");
 }
 
-void Instructions::mul() const 
+void Instructions::mul()  
 {
 	std::cout << "mul" << std::endl;
-	if (top >= 1)
+	if (stack.size() >= 1)
 	{
-		stack[top - 1] = stack[top] * stack[top -1];
-		top--;
+		stack[stack.size() - 1] = stack[stack.size()] * stack[stack.size() -1];
+		//top--;
 	} else
 		throw MathException("Not enough values on the stack to execute 'mul' instruction");
 }
 
-void Instructions::div() const
+void Instructions::div() 
 {
 	std::cout << "div" << std::endl;
-	if (top >= 1)
+	if (stack.size() >= 1)
 	{
-		stack[top - 1] = stack[top] / stack[top -1];
-		top--;
+		stack[stack.size() - 1] = stack[stack.size()] / stack[stack.size() -1];
+		//top--;
 	} else
 		throw MathException("Not enough values on the stack to execute 'div' instruction");
 }
 
- void Instructions::mod() const
+ void Instructions::mod() 
 {
 	std::cout << "mod" << std::endl;
-	if (top >= 1)
+	if (stack.size() >= 1)
 	{
-		stack[top - 1] = stack[top] % stack[top -1];
-		top--;
+		stack[stack.size() - 1] = stack[stack.size()] % stack[stack.size() -1];
+		//top--;
 	} 
 	else
 		throw MathException("Not enough values on the stack to execute 'mod' instruction");
 }
 
-void Instructions::print() const
+void Instructions::print() 
 {
 	std::cout << "print" << std::endl;
-	if (stack[top]->getType == INT8)
-		std::cout << stack[top]->toString() << std::endl;
+	if (stack.back()->getType() == INT8)
+		std::cout << stack[stack.size()]->toString() << std::endl;
 	else
-		throw MathException("Assert value not true while executing 'print' instruction: " + boost::lexical_cast<std::string>(value));
+		throw MathException("Assert value not true while executing 'print' instruction: " + stack.back()->toString());
 }
 
-void Instructions::exit() const
+void Instructions::exit() 
 {
 	std::cout << "exit" << std::endl;
 }
 
-void Instructions::push(eOperandType type, std::string value) const
+void Instructions::push(eOperandType type, std::string value) 
 {
 	OperandFactory * factory = new OperandFactory();
-	stack[top] = factory->createOperand(type, value);
-	top++;
+	//stack[stack.size()] = factory->createOperand(type, value);
+	stack.push_back(factory->createOperand(type, value));
+	//top++;
 }
 
-void Instructions::assertt(eOperandType type, std::string value) const
+void Instructions::assertt(eOperandType type, std::string value) 
 {
 	std::cout << "assert " << value << std::endl;
-	if (!(stack[top] == factory->createOperand(type, value)))
-		throw MathException("Assert value not true : " + boost::lexical_cast<std::string>(value));
+	if (!(stack.back() == factory->createOperand(type, value)))
+		throw MathException("Assert value not true : " + value);
 } 
