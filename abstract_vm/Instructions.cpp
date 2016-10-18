@@ -17,7 +17,6 @@
 Instructions::Instructions()
 {
 	factory = new OperandFactory();
-	//top = 0;
 	return ;
 }
 
@@ -40,14 +39,14 @@ Instructions &  Instructions::operator=(Instructions const & src)
 
 void Instructions::pop() 
 {
-	std::cout << "pop" << std::endl;
+	//std::cout << "pop" << std::endl;
 	stack.pop_back();
 }
 
 void Instructions::dump()  
 {
-	std::cout << "dump" << std::endl;
-	for (int i = stack.size(); i > 0; i--)
+	//std::cout << "dump" << std::endl;
+	for (int i = stack.size() - 1; i > 0; i--)
 	{
 		std::cout << stack[i]->toString() << std::endl;
 	}
@@ -55,11 +54,10 @@ void Instructions::dump()
 
 void Instructions::add() 
 {
-	std::cout << "add" << std::endl;
+	//std::cout << "add" << std::endl;
 	if (stack.size() >= 1)
 	{
-		stack[stack.size() - 1] = stack[stack.size()] + stack[stack.size() -1];
-		//top--;
+		stack[stack.size() - 2] = *stack[stack.size() - 1] + *stack[stack.size() -2];
 	} else
 		throw MathException("Not enough values on the stack to execute 'add' instruction");
 
@@ -67,44 +65,40 @@ void Instructions::add()
 
 void Instructions::sub() 
 {
-	std::cout << "sub" << std::endl;
+	//std::cout << "sub" << std::endl;
 	if (stack.size() >= 1)
 	{
-		stack[stack.size() - 1] = stack[stack.size()] - stack[stack.size() -1];
-		//top--;
+		stack[stack.size() - 2] = *stack[stack.size() - 1] - *stack[stack.size() - 2];
 	} else
 		throw MathException("Not enough values on the stack to execute 'sub' instruction");
 }
 
 void Instructions::mul()  
 {
-	std::cout << "mul" << std::endl;
+	//std::cout << "mul" << std::endl;
 	if (stack.size() >= 1)
 	{
-		stack[stack.size() - 1] = stack[stack.size()] * stack[stack.size() -1];
-		//top--;
+		stack[stack.size() - 2] = *stack[stack.size() - 1] * *stack[stack.size() - 2];
 	} else
 		throw MathException("Not enough values on the stack to execute 'mul' instruction");
 }
 
 void Instructions::div() 
 {
-	std::cout << "div" << std::endl;
+	//std::cout << "div" << std::endl;
 	if (stack.size() >= 1)
 	{
-		stack[stack.size() - 1] = stack[stack.size()] / stack[stack.size() -1];
-		//top--;
+		stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
 	} else
 		throw MathException("Not enough values on the stack to execute 'div' instruction");
 }
 
  void Instructions::mod() 
 {
-	std::cout << "mod" << std::endl;
+	//std::cout << "mod" << std::endl;
 	if (stack.size() >= 1)
 	{
-		stack[stack.size() - 1] = stack[stack.size()] % stack[stack.size() -1];
-		//top--;
+		stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
 	} 
 	else
 		throw MathException("Not enough values on the stack to execute 'mod' instruction");
@@ -112,7 +106,7 @@ void Instructions::div()
 
 void Instructions::print() 
 {
-	std::cout << "print" << std::endl;
+	//std::cout << "print" << std::endl;
 	if (stack.back()->getType() == INT8)
 		std::cout << stack[stack.size()]->toString() << std::endl;
 	else
@@ -127,9 +121,7 @@ void Instructions::exit()
 void Instructions::push(eOperandType type, std::string value) 
 {
 	OperandFactory * factory = new OperandFactory();
-	//stack[stack.size()] = factory->createOperand(type, value);
 	stack.push_back(factory->createOperand(type, value));
-	//top++;
 }
 
 void Instructions::assertt(eOperandType type, std::string value) 

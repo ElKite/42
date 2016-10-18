@@ -1,4 +1,4 @@
-bhv bhkv // ************************************************************************** //
+// ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
 //   Parser.cpp                                         :+:      :+:    :+:   //
@@ -66,7 +66,7 @@ void Parser::readfile(std::string filename)
 	while (std::getline(infile, line))
 	{
 		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
- 		check_line(line, *instructions);
+ 		check_line(line);
  		lineNbr++;
 	}
 }
@@ -76,10 +76,10 @@ void Parser::check_line(std::string line)
 	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
-	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
-	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$");
-
-	\w
+	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
+	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])$");
+	//std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[0-9]*\\.[0-9]+|[0-9]+[)])(?=;)");
+	//std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[0-9]*\\.[0-9]+|[0-9]+[)])$");
 
 //^(((push)|(assert))+[ \t]+((int8[(])|(int16[(])|(int32[(])|(float[(])|(double[(]))+-?[0-9]+[)])$
 
@@ -88,12 +88,12 @@ void Parser::check_line(std::string line)
 	//type unknown
 
 	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
-		check_instructions(instructions, line);
+		check_instructions(line);
 	//else
 		//std::cout << "error matching regex" << std::endl;
 		//throw exception
 	if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
-		check_argumented_instructions(instructions, line);
+		check_argumented_instructions(line);
 	//else
 		//std::cout << "error matching regex 2" << std::endl;
 		//throw exception
@@ -109,47 +109,47 @@ void Parser::check_instructions(std::string line)
 			{
 				case 1:
 				{	
-					instructions.pop();
+					instructions->pop();
 					break ;
 				}
 				case 2:
 				{	
-					instructions.dump();
+					instructions->dump();
 					break ;
 				}
 				case 4:
 				{	
-					instructions.add();
+					instructions->add();
 					break ;
 				}
 				case 5:
 				{	
-					instructions.sub();
+					instructions->sub();
 					break ;
 				}
 				case 6:
 				{	
-					instructions.mul();
+					instructions->mul();
 					break ;
 				}
 				case 7:
 				{	
-					instructions.div();
+					instructions->div();
 					break ;
 				}
 				case 8:
 				{	
-					instructions.mod();
+					instructions->mod();
 					break ;
 				}
 				case 9:
 				{	
-					instructions.print();
+					instructions->print();
 					break ;
 				}
 				case 10:
 				{	
-					instructions.exit();
+					instructions->exit();
 					break ;
 				}														
 			}
@@ -160,9 +160,10 @@ void Parser::check_instructions(std::string line)
 
 void Parser::check_argumented_instructions(std::string line)
 {
+	std::cout<< "PARSING OK" << std::endl;
 	std::vector<std::string> elems = split(line, ' ');
-	std::vector<std::string> type = split(elems.at(1), '('));
-	std::vector<std::string> value = split(type.at(1), ')'));
+	std::vector<std::string> type = split(elems.at(1), '(');
+	std::vector<std::string> value = split(type.at(1), ')');
 	eOperandType myType;
 
 	if (type.at(0) == "int8")
@@ -178,9 +179,9 @@ void Parser::check_argumented_instructions(std::string line)
 
 	if (elems.at(0) == instructions_list[0])
 	{
-		instructions.push(myType, value.at(0));
+		instructions->push(myType, value.at(0));
 	} else if (elems.at(0) == instructions_list[3])
 	{
-		instructions.assertt(myType, value.at(0));
+		instructions->assertt(myType, value.at(0));
 	}
 }

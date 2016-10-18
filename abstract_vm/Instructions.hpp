@@ -38,7 +38,6 @@ static std::string instructions_list[] = {
 class Instructions {
 
 	std::vector <const IOperand *> stack;
-	//int top;
 	OperandFactory * factory;
 
 public:
