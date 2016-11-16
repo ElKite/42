@@ -76,12 +76,12 @@ void Parser::check_line(std::string line)
 	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
-	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
-	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])$");
-	//std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[0-9]*\\.[0-9]+|[0-9]+[)])(?=;)");
-	//std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[0-9]*\\.[0-9]+|[0-9]+[)])$");
+	//OK SAUF FLOAT//std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
+	//OK SAUF FLOAT//std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])$");
+	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[-+]?[-+]?[0-9]*\\.?[0-9]+[)])(?=;)");
+	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
 
-//^(((push)|(assert))+[ \t]+((int8[(])|(int16[(])|(int32[(])|(float[(])|(double[(]))+-?[0-9]+[)])$
+	//^((push|assert)[ \t]+(int8\(|int16\(|int32\(|float\(|double\()[-+]?[0-9]*\.?[0-9]+[)]\n?)$
 
 	//syntax error
 	//instructions unknown
@@ -89,14 +89,8 @@ void Parser::check_line(std::string line)
 
 	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
 		check_instructions(line);
-	//else
-		//std::cout << "error matching regex" << std::endl;
-		//throw exception
 	if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
 		check_argumented_instructions(line);
-	//else
-		//std::cout << "error matching regex 2" << std::endl;
-		//throw exception
 }
 
 void Parser::check_instructions(std::string line)
@@ -160,7 +154,6 @@ void Parser::check_instructions(std::string line)
 
 void Parser::check_argumented_instructions(std::string line)
 {
-	std::cout<< "PARSING OK" << std::endl;
 	std::vector<std::string> elems = split(line, ' ');
 	std::vector<std::string> type = split(elems.at(1), '(');
 	std::vector<std::string> value = split(type.at(1), ')');

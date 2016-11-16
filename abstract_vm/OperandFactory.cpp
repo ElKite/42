@@ -63,31 +63,31 @@ IOperand const * OperandFactory::createOperand(eOperandType type, std::string co
 	{
 		case INT8:
 		{
-			std::cout << "createInt8" <<std::endl;
+			//std::cout << "createInt8" <<std::endl;
 			return (createInt8(value));
 			break;
 		}
 		case INT16:
 		{
-			std::cout << "createInt16" <<std::endl;
+			//std::cout << "createInt16" <<std::endl;
 			return (createInt16(value));
 			break ;
 		}
 		case INT32:
 		{
-			std::cout << "createInt32" <<std::endl;
+			//std::cout << "createInt32" <<std::endl;
 			return (createInt32(value));
 			break;
 		}
 		case FLOAT:
 		{
-			std::cout << "createFloat" <<std::endl;
+			//std::cout << "createFloat" <<std::endl;
 			return (createFloat(value));
 			break;
 		}
 		case DOUBLE:
 		{
-			std::cout << "createDouble" <<std::endl;
+			//std::cout << "createDouble" <<std::endl;
 			return (createDouble(value));
 			break;
 		}
@@ -110,7 +110,6 @@ IOperand const * OperandFactory::createInt16( std::string const & value ) const
 {
 	double myValue = 0;
     try {
-    	    	        std::cout << "TRY INT16 VALUE :" << myValue <<std::endl;
         myValue = boost::lexical_cast<double>(value);
     } catch(boost::bad_lexical_cast&) {
     	std::cout << "ERROR INT16" << std::endl;

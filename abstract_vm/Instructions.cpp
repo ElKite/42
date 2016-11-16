@@ -46,7 +46,7 @@ void Instructions::pop()
 void Instructions::dump()  
 {
 	//std::cout << "dump" << std::endl;
-	for (int i = stack.size() - 1; i > 0; i--)
+	for (int i = stack.size() - 1; i >= 0; i--)
 	{
 		std::cout << stack[i]->toString() << std::endl;
 	}
@@ -57,7 +57,9 @@ void Instructions::add()
 	//std::cout << "add" << std::endl;
 	if (stack.size() >= 1)
 	{
+		std::cout << (*stack[stack.size() - 2]).toString() <<  " + " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] + *stack[stack.size() -2];
+		stack.pop_back();
 	} else
 		throw MathException("Not enough values on the stack to execute 'add' instruction");
 
@@ -68,7 +70,9 @@ void Instructions::sub()
 	//std::cout << "sub" << std::endl;
 	if (stack.size() >= 1)
 	{
+		std::cout << (*stack[stack.size() - 2]).toString() <<  " - " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] - *stack[stack.size() - 2];
+		stack.pop_back();
 	} else
 		throw MathException("Not enough values on the stack to execute 'sub' instruction");
 }
@@ -78,7 +82,9 @@ void Instructions::mul()
 	//std::cout << "mul" << std::endl;
 	if (stack.size() >= 1)
 	{
+		std::cout << (*stack[stack.size() - 2]).toString() <<  " * " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] * *stack[stack.size() - 2];
+		stack.pop_back();
 	} else
 		throw MathException("Not enough values on the stack to execute 'mul' instruction");
 }
