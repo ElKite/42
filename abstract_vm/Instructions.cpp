@@ -94,7 +94,9 @@ void Instructions::div()
 	//std::cout << "div" << std::endl;
 	if (stack.size() >= 1)
 	{
+		std::cout << (*stack[stack.size() - 2]).toString() <<  " / " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
+		stack.pop_back();
 	} else
 		throw MathException("Not enough values on the stack to execute 'div' instruction");
 }
@@ -104,7 +106,9 @@ void Instructions::div()
 	//std::cout << "mod" << std::endl;
 	if (stack.size() >= 1)
 	{
+		std::cout << (*stack[stack.size() - 2]).toString() <<  " % " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
+		stack.pop_back();
 	} 
 	else
 		throw MathException("Not enough values on the stack to execute 'mod' instruction");
@@ -119,6 +123,7 @@ void Instructions::print()
 		throw MathException("Assert value not true while executing 'print' instruction: " + stack.back()->toString());
 }
 
+//check if last line is exit() if not throw an error
 void Instructions::exit() 
 {
 	std::cout << "exit" << std::endl;

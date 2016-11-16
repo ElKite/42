@@ -73,12 +73,12 @@ void Parser::readfile(std::string filename)
 
 void Parser::check_line(std::string line)
 {
-	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
+	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
 	//OK SAUF FLOAT//std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
 	//OK SAUF FLOAT//std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])$");
-	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(][-+]?[-+]?[-+]?[0-9]*\\.?[0-9]+[)])(?=;)");
+	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
 	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
 
 	//^((push|assert)[ \t]+(int8\(|int16\(|int32\(|float\(|double\()[-+]?[0-9]*\.?[0-9]+[)]\n?)$
