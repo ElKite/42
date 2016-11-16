@@ -39,8 +39,12 @@ Instructions &  Instructions::operator=(Instructions const & src)
 
 void Instructions::pop() 
 {
-	//std::cout << "pop" << std::endl;
-	stack.pop_back();
+//	std::cout << "pop" << std::endl;
+	if (stack.size() >= 1) {
+		stack.pop_back();
+	}
+	else
+		throw InstructionException("Not enough values on the stack to execute 'pop' instruction");
 }
 
 void Instructions::dump()  
@@ -55,63 +59,65 @@ void Instructions::dump()
 void Instructions::add() 
 {
 	//std::cout << "add" << std::endl;
-	if (stack.size() >= 1)
+	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " + " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] + *stack[stack.size() -2];
 		stack.pop_back();
 	} else
-		throw MathException("Not enough values on the stack to execute 'add' instruction");
+		throw InstructionException("Not enough values on the stack to execute 'add' instruction");
 
 }
 
 void Instructions::sub() 
 {
 	//std::cout << "sub" << std::endl;
-	if (stack.size() >= 1)
+	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " - " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] - *stack[stack.size() - 2];
 		stack.pop_back();
 	} else
-		throw MathException("Not enough values on the stack to execute 'sub' instruction");
+		throw InstructionException("Not enough values on the stack to execute 'sub' instruction");
 }
 
 void Instructions::mul()  
 {
 	//std::cout << "mul" << std::endl;
-	if (stack.size() >= 1)
+	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " * " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] * *stack[stack.size() - 2];
 		stack.pop_back();
 	} else
-		throw MathException("Not enough values on the stack to execute 'mul' instruction");
+		throw InstructionException("Not enough values on the stack to execute 'mul' instruction");
 }
 
 void Instructions::div() 
 {
 	//std::cout << "div" << std::endl;
-	if (stack.size() >= 1)
+	//DIV PAR ZERO CATCH
+	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " / " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
 		stack.pop_back();
 	} else
-		throw MathException("Not enough values on the stack to execute 'div' instruction");
+		throw InstructionException("Not enough values on the stack to execute 'div' instruction");
 }
 
  void Instructions::mod() 
 {
 	//std::cout << "mod" << std::endl;
-	if (stack.size() >= 1)
+	//MOD ZERO CATCH
+	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " % " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
 		stack.pop_back();
 	} 
 	else
-		throw MathException("Not enough values on the stack to execute 'mod' instruction");
+		throw InstructionException("Not enough values on the stack to execute 'mod' instruction");
 }
 
 void Instructions::print() 
@@ -120,7 +126,7 @@ void Instructions::print()
 	if (stack.back()->getType() == INT8)
 		std::cout << stack[stack.size()]->toString() << std::endl;
 	else
-		throw MathException("Assert value not true while executing 'print' instruction: " + stack.back()->toString());
+		throw InstructionException("Assert value not true while executing 'print' instruction: " + stack.back()->toString());
 }
 
 //check if last line is exit() if not throw an error
@@ -137,7 +143,10 @@ void Instructions::push(eOperandType type, std::string value)
 
 void Instructions::assertt(eOperandType type, std::string value) 
 {
-	std::cout << "assert " << value << std::endl;
-	if (!(stack.back() == factory->createOperand(type, value)))
-		throw MathException("Assert value not true : " + value);
+	//std::cout << "assert " << value << std::endl;
+	if (stack.size() >= 2) {
+		if (!(stack.back() == factory->createOperand(type, value))) 
+			throw InstructionException("Assert value not true : " + value);
+	} else
+	throw InstructionException("Not enough value on the stack to execute 'assert' instruction");
 } 

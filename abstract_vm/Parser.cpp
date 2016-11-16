@@ -76,12 +76,9 @@ void Parser::check_line(std::string line)
 	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
-	//OK SAUF FLOAT//std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
-	//OK SAUF FLOAT//std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16(|int32(|float(|double(]+-?[0-9]+[)])$");
 	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
 	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
 
-	//^((push|assert)[ \t]+(int8\(|int16\(|int32\(|float\(|double\()[-+]?[0-9]*\.?[0-9]+[)]\n?)$
 
 	//syntax error
 	//instructions unknown
@@ -97,57 +94,61 @@ void Parser::check_instructions(std::string line)
 {
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
-		if (instructions_list[i] == line)
-		{
-			switch (i)
+		try {
+			if (instructions_list[i] == line)
 			{
-				case 1:
-				{	
-					instructions->pop();
-					break ;
+				switch (i)
+				{
+					case 1:
+					{	
+						instructions->pop();
+						break ;
+					}
+					case 2:
+					{	
+						instructions->dump();
+						break ;
+					}
+					case 4:
+					{	
+						instructions->add();
+						break ;
+					}
+					case 5:
+					{	
+						instructions->sub();
+						break ;
+					}
+					case 6:
+					{	
+						instructions->mul();
+						break ;
+					}
+					case 7:
+					{	
+						instructions->div();
+						break ;
+					}
+					case 8:
+					{	
+						instructions->mod();
+						break ;
+					}
+					case 9:
+					{	
+						instructions->print();
+						break ;
+					}
+					case 10:
+					{	
+						instructions->exit();
+						break ;
+					}														
 				}
-				case 2:
-				{	
-					instructions->dump();
-					break ;
-				}
-				case 4:
-				{	
-					instructions->add();
-					break ;
-				}
-				case 5:
-				{	
-					instructions->sub();
-					break ;
-				}
-				case 6:
-				{	
-					instructions->mul();
-					break ;
-				}
-				case 7:
-				{	
-					instructions->div();
-					break ;
-				}
-				case 8:
-				{	
-					instructions->mod();
-					break ;
-				}
-				case 9:
-				{	
-					instructions->print();
-					break ;
-				}
-				case 10:
-				{	
-					instructions->exit();
-					break ;
-				}														
+				break ;	
 			}
-			break ;	
+		} catch (const std::exception &e) {
+			std::cout << e.what() << std::endl;
 		}
 	}
 }
@@ -175,6 +176,11 @@ void Parser::check_argumented_instructions(std::string line)
 		instructions->push(myType, value.at(0));
 	} else if (elems.at(0) == instructions_list[3])
 	{
-		instructions->assertt(myType, value.at(0));
+		try {
+			instructions->assertt(myType, value.at(0));
+		} 
+		catch(const std::exception &e) {
+			std::cout << e.what() << std::endl;
+    	} 
 	}
 }

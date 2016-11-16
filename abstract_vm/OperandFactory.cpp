@@ -48,17 +48,26 @@ void  OperandFactory::checkValue(eOperandType type, std::string const & value) c
 	{
 		if (myOperand[i].type == type)
 		{
-			if (d > myOperand[i].max)
-				throw MathException("Overflow : " +  value + " " + myOperand[i].name);
-			else if (d < myOperand[i].min)
-				throw MathException("Underflow : " + value + " " + myOperand[i].name);
+			if (d > myOperand[i].max) {
+				std::string s = "Overflow : " +  value + " " + myOperand[i].name;
+				throw MathException(s);
+			}
+			else if (d < myOperand[i].min) {
+				std::string s = "Underflow : " + value + " " + myOperand[i].name;
+				throw MathException(s);
+			}
 		}
 	}
 }
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value) const
 {
-	checkValue(type, value);
+	try {
+		checkValue(type, value);
+	} catch (const std::exception &e) {
+		std::cout << e.what() << std::endl;
+		//std::terminate();
+	}
 	switch(type)
 	{
 		case INT8:
@@ -97,11 +106,7 @@ IOperand const * OperandFactory::createOperand(eOperandType type, std::string co
 IOperand const * OperandFactory::createInt8( std::string const & value ) const
 {
 	double myValue = 0;
-    try {
-        myValue = boost::lexical_cast<double>(value);
-    } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR INT8" << std::endl;
-    }
+    myValue = boost::lexical_cast<double>(value);
 	IOperand * const operand = new TOperand<int8_t>(myValue, INT8);
 	return operand;
 }
@@ -109,11 +114,7 @@ IOperand const * OperandFactory::createInt8( std::string const & value ) const
 IOperand const * OperandFactory::createInt16( std::string const & value ) const
 {
 	double myValue = 0;
-    try {
-        myValue = boost::lexical_cast<double>(value);
-    } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR INT16" << std::endl;
-    }
+    myValue = boost::lexical_cast<double>(value);
 	IOperand * const operand = new TOperand<int16_t>(myValue, INT16);
 	return operand;
 }
@@ -121,11 +122,7 @@ IOperand const * OperandFactory::createInt16( std::string const & value ) const
 IOperand const * OperandFactory::createInt32( std::string const & value ) const
 {
 	double myValue = 0;
-    try {
-        myValue = boost::lexical_cast<double>(value);
-    } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR INT32" << std::endl;
-    }
+	myValue = boost::lexical_cast<double>(value);
 	IOperand * const operand = new TOperand<int32_t>(myValue, INT32);
 	return operand;
 }
@@ -133,11 +130,7 @@ IOperand const * OperandFactory::createInt32( std::string const & value ) const
 IOperand const * OperandFactory::createFloat( std::string const & value ) const
 {
 	double myValue = 0;
-    try {
-        myValue = boost::lexical_cast<double>(value);
-    } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR FLOAT" << std::endl;
-    }
+    myValue = boost::lexical_cast<double>(value);
     IOperand * const operand = new TOperand<float>(myValue, FLOAT);
     return operand;
 }
@@ -145,11 +138,7 @@ IOperand const * OperandFactory::createFloat( std::string const & value ) const
 IOperand const * OperandFactory::createDouble( std::string const & value ) const
 {
 	double myValue = 0;
-    try {
-        myValue = boost::lexical_cast<double>(value);
-    } catch(boost::bad_lexical_cast&) {
-    	std::cout << "ERROR DOUBLE" << std::endl;
-    }
-	IOperand * const operand = new TOperand<double>(myValue, DOUBLE);
+    myValue = boost::lexical_cast<double>(value);
+ 	IOperand * const operand = new TOperand<double>(myValue, DOUBLE);
 	return operand;
 }
