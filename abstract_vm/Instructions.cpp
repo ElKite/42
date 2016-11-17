@@ -39,7 +39,7 @@ Instructions &  Instructions::operator=(Instructions const & src)
 
 void Instructions::pop() 
 {
-//	std::cout << "pop" << std::endl;
+	//	std::cout << "pop" << std::endl;
 	if (stack.size() >= 1) {
 		stack.pop_back();
 	}
@@ -96,11 +96,15 @@ void Instructions::mul()
 void Instructions::div() 
 {
 	//std::cout << "div" << std::endl;
-	//DIV PAR ZERO CATCH
 	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " / " << (*stack[stack.size() - 1]).toString() << std::endl; 
-		stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
+		try {
+			stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
+		} catch (const std::exception &e) {
+			std::cout << e.what() << std::endl;
+			::exit(1);
+		}	
 		stack.pop_back();
 	} else
 		throw InstructionException("Not enough values on the stack to execute 'div' instruction");
@@ -109,11 +113,15 @@ void Instructions::div()
  void Instructions::mod() 
 {
 	//std::cout << "mod" << std::endl;
-	//MOD ZERO CATCH
 	if (stack.size() >= 2)
 	{
 		std::cout << (*stack[stack.size() - 2]).toString() <<  " % " << (*stack[stack.size() - 1]).toString() << std::endl; 
-		stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
+		try {
+			stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
+		} catch (const std::exception &e) {
+			std::cout << e.what() << std::endl;
+			::exit(1);
+		}
 		stack.pop_back();
 	} 
 	else
@@ -138,7 +146,9 @@ void Instructions::exit()
 void Instructions::push(eOperandType type, std::string value) 
 {
 	OperandFactory * factory = new OperandFactory();
-	stack.push_back(factory->createOperand(type, value));
+	IOperand const * operand = factory->createOperand(type, value);
+	//std::cout << std::to_string(operand->getValue()) << std::endl;
+	stack.push_back(operand);
 }
 
 void Instructions::assertt(eOperandType type, std::string value) 

@@ -66,28 +66,38 @@ void Parser::readfile(std::string filename)
 	while (std::getline(infile, line))
 	{
 		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
- 		check_line(line);
+		try {
+ 			check_line(line, lineNbr);
+ 		} catch (const std::exception &e) {
+ 			std::cout << e.what() << std::endl;
+ 			exit(1);
+ 		}
  		lineNbr++;
 	}
 }
 
-void Parser::check_line(std::string line)
+void Parser::check_line(std::string line, int lineNbr)
 {
+
+	std::regex comment("^([ \t]+)?;(.*?)\n?$");
+	std::regex empty("^([ \t]+)?\n?$");
+
 	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
 	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
 	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
 
-
-	//syntax error
-	//instructions unknown
-	//type unknown
-
 	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
 		check_instructions(line);
-	if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
+	else if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
 		check_argumented_instructions(line);
+	else if (!std::regex_match(line, comment) && !std::regex_match(line, empty))
+	{
+		std::string s = "Syntax error on line " + std::to_string(lineNbr);
+		throw InstructionException(s);
+		exit(1);
+	}
 }
 
 void Parser::check_instructions(std::string line)
@@ -149,6 +159,7 @@ void Parser::check_instructions(std::string line)
 			}
 		} catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;
+			exit(1);
 		}
 	}
 }

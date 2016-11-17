@@ -87,9 +87,11 @@ public:
 
 	std::string const & toString() const
 	{
-		std::ostringstream sstream;
-		sstream << this->_value;
-		std::string * s = new std::string(sstream.str());
+		//std::ostringstream sstream;
+		//sstream << this->_value;
+		//std::string * s = new std::string(sstream.str());
+		//std::cout << " TEST " + sstream.str() << std::endl;
+		std::string * s = new std::string(std::to_string(this->_value));
 		return *s;
 	}
 
@@ -172,8 +174,10 @@ public:
 		eOperandType type;
 
 		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
-		if (rhs.getValue() == 0)
-			throw MathException("Division using 0");
+		if (rhs.getValue() == 0 || this->_value == 0){
+			std::string s = "Division using 0";
+			throw MathException(s);
+		}
 		else {
 			double value = this->_value / rhs.getValue();
 			operand = createOperator(value, type);

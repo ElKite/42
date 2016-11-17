@@ -49,7 +49,7 @@ void  OperandFactory::checkValue(eOperandType type, std::string const & value) c
 		if (myOperand[i].type == type)
 		{
 			if (d > myOperand[i].max) {
-				std::string s = "Overflow : " +  value + " " + myOperand[i].name;
+				std::string s = "Overflow : " + value + " " + myOperand[i].name;
 				throw MathException(s);
 			}
 			else if (d < myOperand[i].min) {
@@ -66,7 +66,7 @@ IOperand const * OperandFactory::createOperand(eOperandType type, std::string co
 		checkValue(type, value);
 	} catch (const std::exception &e) {
 		std::cout << e.what() << std::endl;
-		//std::terminate();
+		std::exit(1);
 	}
 	switch(type)
 	{
