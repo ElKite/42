@@ -22,6 +22,8 @@
 class Parser {
 
 	Instructions * instructions;
+	std::string _myLinesNbr;
+	bool 		_StopOnError;
 
 public:
 
@@ -34,10 +36,12 @@ public:
 	void readfile(std::string filename);
 	void check_instructions(std::string line);
 	void check_argumented_instructions(std::string line);
-	void check_line(std::string line, int lineNbr);
+	void check_line(std::string line);
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
 	Parser & operator=(Parser const & src);
+
+	void setStopOnError(bool stop);
 
 };
 

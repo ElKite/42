@@ -17,6 +17,7 @@
 Parser::Parser()
 {
 	instructions = new Instructions();
+	_StopOnError = true;
 	return ;
 }
 
@@ -65,18 +66,20 @@ void Parser::readfile(std::string filename)
 
 	while (std::getline(infile, line))
 	{
-		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
+//		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
+		this->_myLinesNbr = std::to_string(lineNbr);
 		try {
- 			check_line(line, lineNbr);
+ 			check_line(line);
  		} catch (const std::exception &e) {
- 			std::cout << e.what() << std::endl;
- 			exit(1);
+ 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+ 			if (_StopOnError)
+ 				exit(1);
  		}
  		lineNbr++;
 	}
 }
 
-void Parser::check_line(std::string line, int lineNbr)
+void Parser::check_line(std::string line)
 {
 
 	std::regex comment("^([ \t]+)?;(.*?)\n?$");
@@ -94,9 +97,8 @@ void Parser::check_line(std::string line, int lineNbr)
 		check_argumented_instructions(line);
 	else if (!std::regex_match(line, comment) && !std::regex_match(line, empty))
 	{
-		std::string s = "Syntax error on line " + std::to_string(lineNbr);
+		std::string s = "Syntax error";
 		throw InstructionException(s);
-		exit(1);
 	}
 }
 
@@ -158,8 +160,9 @@ void Parser::check_instructions(std::string line)
 				break ;	
 			}
 		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-			exit(1);
+			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+			if (_StopOnError)
+				exit(1);
 		}
 	}
 }
@@ -191,7 +194,15 @@ void Parser::check_argumented_instructions(std::string line)
 			instructions->assertt(myType, value.at(0));
 		} 
 		catch(const std::exception &e) {
-			std::cout << e.what() << std::endl;
+			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+			if (_StopOnError)
+				exit(1);
     	} 
 	}
+}
+
+void Parser::setStopOnError(bool stop)
+{
+	this->_StopOnError = stop;
+	instructions->setStopOnError(stop);
 }

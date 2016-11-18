@@ -37,8 +37,9 @@ static std::string instructions_list[] = {
 
 class Instructions {
 
-	std::vector <const IOperand *> stack;
-	OperandFactory * factory;
+	std::vector <const IOperand *> 	stack;
+	OperandFactory *				factory;
+	bool							_StopOnError;
 
 public:
 
@@ -60,6 +61,8 @@ public:
 	void assertt(eOperandType type, std::string value) ;
 
 	Instructions & operator=(Instructions const & src);
+
+	void setStopOnError(bool stop);
 
 };
 

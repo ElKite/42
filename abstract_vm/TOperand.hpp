@@ -87,11 +87,15 @@ public:
 
 	std::string const & toString() const
 	{
-		//std::ostringstream sstream;
-		//sstream << this->_value;
-		//std::string * s = new std::string(sstream.str());
-		//std::cout << " TEST " + sstream.str() << std::endl;
-		std::string * s = new std::string(std::to_string(this->_value));
+		std::ostringstream sstream;
+		sstream << this->_value;
+		std::string * s;
+
+		if (this->_type != INT8) {
+			s = new std::string(sstream.str());
+		} else {
+			s = new std::string(std::to_string(this->_value));
+		}
 		return *s;
 	}
 

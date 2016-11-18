@@ -17,6 +17,7 @@
 Instructions::Instructions()
 {
 	factory = new OperandFactory();
+	this->_StopOnError = true;
 	return ;
 }
 
@@ -61,7 +62,7 @@ void Instructions::add()
 	//std::cout << "add" << std::endl;
 	if (stack.size() >= 2)
 	{
-		std::cout << (*stack[stack.size() - 2]).toString() <<  " + " << (*stack[stack.size() - 1]).toString() << std::endl; 
+		//std::cout << (*stack[stack.size() - 2]).toString() <<  " + " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] + *stack[stack.size() -2];
 		stack.pop_back();
 	} else
@@ -74,7 +75,7 @@ void Instructions::sub()
 	//std::cout << "sub" << std::endl;
 	if (stack.size() >= 2)
 	{
-		std::cout << (*stack[stack.size() - 2]).toString() <<  " - " << (*stack[stack.size() - 1]).toString() << std::endl; 
+		//std::cout << (*stack[stack.size() - 2]).toString() <<  " - " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] - *stack[stack.size() - 2];
 		stack.pop_back();
 	} else
@@ -86,7 +87,7 @@ void Instructions::mul()
 	//std::cout << "mul" << std::endl;
 	if (stack.size() >= 2)
 	{
-		std::cout << (*stack[stack.size() - 2]).toString() <<  " * " << (*stack[stack.size() - 1]).toString() << std::endl; 
+		//std::cout << (*stack[stack.size() - 2]).toString() <<  " * " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		stack[stack.size() - 2] = *stack[stack.size() - 1] * *stack[stack.size() - 2];
 		stack.pop_back();
 	} else
@@ -98,12 +99,13 @@ void Instructions::div()
 	//std::cout << "div" << std::endl;
 	if (stack.size() >= 2)
 	{
-		std::cout << (*stack[stack.size() - 2]).toString() <<  " / " << (*stack[stack.size() - 1]).toString() << std::endl; 
+		//std::cout << (*stack[stack.size() - 2]).toString() <<  " / " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		try {
 			stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
 		} catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;
-			::exit(1);
+			if (_StopOnError)
+				::exit(1);
 		}	
 		stack.pop_back();
 	} else
@@ -115,12 +117,13 @@ void Instructions::div()
 	//std::cout << "mod" << std::endl;
 	if (stack.size() >= 2)
 	{
-		std::cout << (*stack[stack.size() - 2]).toString() <<  " % " << (*stack[stack.size() - 1]).toString() << std::endl; 
+		//std::cout << (*stack[stack.size() - 2]).toString() <<  " % " << (*stack[stack.size() - 1]).toString() << std::endl; 
 		try {
 			stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
 		} catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;
-			::exit(1);
+			if (_StopOnError)
+				::exit(1);
 		}
 		stack.pop_back();
 	} 
@@ -146,6 +149,7 @@ void Instructions::exit()
 void Instructions::push(eOperandType type, std::string value) 
 {
 	OperandFactory * factory = new OperandFactory();
+	factory->setStopOnError(false);
 	IOperand const * operand = factory->createOperand(type, value);
 	//std::cout << std::to_string(operand->getValue()) << std::endl;
 	stack.push_back(operand);
@@ -155,8 +159,16 @@ void Instructions::assertt(eOperandType type, std::string value)
 {
 	//std::cout << "assert " << value << std::endl;
 	if (stack.size() >= 2) {
-		if (!(stack.back() == factory->createOperand(type, value))) 
-			throw InstructionException("Assert value not true : " + value);
+		const IOperand * operand = factory->createOperand(type, value);		
+		if (stack[stack.size() - 1]->getValue() != operand->getValue() || stack[stack.size() - 1]->getType() != operand->getType()) {
+			throw InstructionException("Assert value not true : type or value not equal"); 
+		}
 	} else
-	throw InstructionException("Not enough value on the stack to execute 'assert' instruction");
+		throw InstructionException("Not enough value on the stack to execute 'assert' instruction");
 } 
+
+void Instructions::setStopOnError(bool stop)
+{
+	this->_StopOnError = stop;
+	factory->setStopOnError(stop);
+}

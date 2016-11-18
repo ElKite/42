@@ -16,6 +16,7 @@
 
 OperandFactory::OperandFactory() 
 {
+	this->_StopOnError = true;
 	return ;
 }
 
@@ -66,7 +67,8 @@ IOperand const * OperandFactory::createOperand(eOperandType type, std::string co
 		checkValue(type, value);
 	} catch (const std::exception &e) {
 		std::cout << e.what() << std::endl;
-		std::exit(1);
+		if (_StopOnError)
+			std::exit(1);
 	}
 	switch(type)
 	{
@@ -141,4 +143,9 @@ IOperand const * OperandFactory::createDouble( std::string const & value ) const
     myValue = boost::lexical_cast<double>(value);
  	IOperand * const operand = new TOperand<double>(myValue, DOUBLE);
 	return operand;
+}
+
+void OperandFactory::setStopOnError(bool stop)
+{
+	this->_StopOnError = stop;
 }
