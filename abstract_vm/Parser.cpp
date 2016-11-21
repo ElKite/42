@@ -17,6 +17,7 @@
 Parser::Parser()
 {
 	instructions = new Instructions();
+	_StopOnError = true;
 	return ;
 }
 
@@ -65,95 +66,103 @@ void Parser::readfile(std::string filename)
 
 	while (std::getline(infile, line))
 	{
-		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
- 		check_line(line, *instructions);
+//		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
+		this->_myLinesNbr = std::to_string(lineNbr);
+		try {
+ 			check_line(line);
+ 		} catch (const std::exception &e) {
+ 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+ 			if (_StopOnError)
+ 				exit(1);
+ 		}
  		lineNbr++;
 	}
 }
 
 void Parser::check_line(std::string line)
 {
-	std::regex standard_comment("((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
+
+	std::regex comment("^([ \t]+)?;(.*?)\n?$");
+	std::regex empty("^([ \t]+)?\n?$");
+
+	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
 	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
 
-	std::regex withValue_comment("([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])(?=;)");
-	std::regex withValue_nocomment("^([push|assert]+[ \t]+[int8(|int16|int32(|float(|double(]+-?[0-9]+[)])$");
-
-	\w
-
-//^(((push)|(assert))+[ \t]+((int8[(])|(int16[(])|(int32[(])|(float[(])|(double[(]))+-?[0-9]+[)])$
-
-	//syntax error
-	//instructions unknown
-	//type unknown
+	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
+	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
 
 	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
-		check_instructions(instructions, line);
-	//else
-		//std::cout << "error matching regex" << std::endl;
-		//throw exception
-	if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
-		check_argumented_instructions(instructions, line);
-	//else
-		//std::cout << "error matching regex 2" << std::endl;
-		//throw exception
+		check_instructions(line);
+	else if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
+		check_argumented_instructions(line);
+	else if (!std::regex_match(line, comment) && !std::regex_match(line, empty))
+	{
+		std::string s = "Syntax error";
+		throw InstructionException(s);
+	}
 }
 
 void Parser::check_instructions(std::string line)
 {
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
-		if (instructions_list[i] == line)
-		{
-			switch (i)
+		try {
+			if (instructions_list[i] == line)
 			{
-				case 1:
-				{	
-					instructions.pop();
-					break ;
+				switch (i)
+				{
+					case 1:
+					{	
+						instructions->pop();
+						break ;
+					}
+					case 2:
+					{	
+						instructions->dump();
+						break ;
+					}
+					case 4:
+					{	
+						instructions->add();
+						break ;
+					}
+					case 5:
+					{	
+						instructions->sub();
+						break ;
+					}
+					case 6:
+					{	
+						instructions->mul();
+						break ;
+					}
+					case 7:
+					{	
+						instructions->div();
+						break ;
+					}
+					case 8:
+					{	
+						instructions->mod();
+						break ;
+					}
+					case 9:
+					{	
+						instructions->print();
+						break ;
+					}
+					case 10:
+					{	
+						instructions->exit();
+						break ;
+					}														
 				}
-				case 2:
-				{	
-					instructions.dump();
-					break ;
-				}
-				case 4:
-				{	
-					instructions.add();
-					break ;
-				}
-				case 5:
-				{	
-					instructions.sub();
-					break ;
-				}
-				case 6:
-				{	
-					instructions.mul();
-					break ;
-				}
-				case 7:
-				{	
-					instructions.div();
-					break ;
-				}
-				case 8:
-				{	
-					instructions.mod();
-					break ;
-				}
-				case 9:
-				{	
-					instructions.print();
-					break ;
-				}
-				case 10:
-				{	
-					instructions.exit();
-					break ;
-				}														
+				break ;	
 			}
-			break ;	
+		} catch (const std::exception &e) {
+			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+			if (_StopOnError)
+				exit(1);
 		}
 	}
 }
@@ -161,8 +170,8 @@ void Parser::check_instructions(std::string line)
 void Parser::check_argumented_instructions(std::string line)
 {
 	std::vector<std::string> elems = split(line, ' ');
-	std::vector<std::string> type = split(elems.at(1), '('));
-	std::vector<std::string> value = split(type.at(1), ')'));
+	std::vector<std::string> type = split(elems.at(1), '(');
+	std::vector<std::string> value = split(type.at(1), ')');
 	eOperandType myType;
 
 	if (type.at(0) == "int8")
@@ -178,9 +187,22 @@ void Parser::check_argumented_instructions(std::string line)
 
 	if (elems.at(0) == instructions_list[0])
 	{
-		instructions.push(myType, value.at(0));
+		instructions->push(myType, value.at(0));
 	} else if (elems.at(0) == instructions_list[3])
 	{
-		instructions.assertt(myType, value.at(0));
+		try {
+			instructions->assertt(myType, value.at(0));
+		} 
+		catch(const std::exception &e) {
+			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
+			if (_StopOnError)
+				exit(1);
+    	} 
 	}
+}
+
+void Parser::setStopOnError(bool stop)
+{
+	this->_StopOnError = stop;
+	instructions->setStopOnError(stop);
 }

@@ -15,11 +15,12 @@
 
 #include <iostream>
 #include <exception>
+#include <string>
 
 class MathException : public std::exception
 {
 
-	const char * _error;
+	std::string _error;
 
 	MathException() throw()
 	{
@@ -30,7 +31,7 @@ public:
 
 	MathException(std::string msg) throw()
 	{
-		this->_error = msg.c_str();
+		this->_error = "MathException: " + msg;
 		return ;
 	}
 
@@ -41,14 +42,14 @@ public:
 
 	virtual const char* what() const throw()
     {
-    	return _error;
+    	return _error.c_str();
     }
 
 };
 
 class InstructionException : public std::exception
 {
-	const char * _error;
+	std::string _error;
 
 	InstructionException() throw()
 	{
@@ -59,7 +60,7 @@ public:
 
 	InstructionException(std::string s) throw()
 	{
-		this->_error = s.c_str();
+		this->_error = "InstructionException: " + s;
 		return ;
 	}
 
@@ -70,7 +71,7 @@ public:
 
 	virtual const char* what() const throw()
     {
-    	return _error;
+    	return _error.c_str();
     }
 
 }; 

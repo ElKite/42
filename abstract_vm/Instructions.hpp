@@ -14,6 +14,8 @@
 #define INSTRUCTIONS_HPP
 
 #include "TOperand.hpp"
+#include "OperandFactory.hpp"
+#include "eOperandType.hpp"
 #include <boost/assign/list_of.hpp>
 #include <iostream>
 #include <vector>
@@ -35,10 +37,9 @@ static std::string instructions_list[] = {
 
 class Instructions {
 
-	IOperand * stack;
-	int top = 0;
-
-	IOperand * newStack();
+	std::vector <const IOperand *> 	stack;
+	OperandFactory *				factory;
+	bool							_StopOnError;
 
 public:
 
@@ -46,20 +47,22 @@ public:
 	Instructions(Instructions  const & Instructions);
 	~Instructions();
 
-	void pop() const;
-	void dump() const;
-	void add() const;
-	void sub() const ;
-	void mul() const;
-	void div() const;
-	void mod() const;
-	void print() const;
-	void exit() const;
+	void pop();
+	void dump();
+	void add();
+	void sub();
+	void mul();
+	void div();
+	void mod();
+	void print();
+	void exit();
 
-	void push(std::string value) const;
-	void assertt(std::string value) const;
+	void push(eOperandType type, std::string value) ;
+	void assertt(eOperandType type, std::string value) ;
 
 	Instructions & operator=(Instructions const & src);
+
+	void setStopOnError(bool stop);
 
 };
 
