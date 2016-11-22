@@ -23,7 +23,6 @@ class Parser {
 
 	Instructions * instructions;
 	std::string _myLinesNbr;
-	bool 		_StopOnError;
 
 public:
 
@@ -40,9 +39,6 @@ public:
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
 	Parser & operator=(Parser const & src);
-
-	void setStopOnError(bool stop);
-
 };
 
 #endif

@@ -17,7 +17,6 @@
 Instructions::Instructions()
 {
 	factory = new OperandFactory();
-	this->_StopOnError = true;
 	return ;
 }
 
@@ -104,8 +103,7 @@ void Instructions::div()
 			stack[stack.size() - 2] = *stack[stack.size() - 1] / *stack[stack.size() - 2];
 		} catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;
-			if (_StopOnError)
-				::exit(1);
+			::exit(1);
 		}	
 		stack.pop_back();
 	} else
@@ -122,8 +120,7 @@ void Instructions::div()
 			stack[stack.size() - 2] = *stack[stack.size() - 1] % *stack[stack.size() - 2];
 		} catch (const std::exception &e) {
 			std::cout << e.what() << std::endl;
-			if (_StopOnError)
-				::exit(1);
+			::exit(1);
 		}
 		stack.pop_back();
 	} 
@@ -135,21 +132,19 @@ void Instructions::print()
 {
 	//std::cout << "print" << std::endl;
 	if (stack.back()->getType() == INT8)
-		std::cout << stack[stack.size()]->toString() << std::endl;
+		std::cout << static_cast<char> (stack[stack.size() - 1]->getValue()) << std::endl;
 	else
-		throw InstructionException("Assert value not true while executing 'print' instruction: " + stack.back()->toString());
+		throw InstructionException("Assert value not true while executing 'print' instruction");
 }
 
-//check if last line is exit() if not throw an error
 void Instructions::exit() 
 {
-	std::cout << "exit" << std::endl;
+	//std::cout << "exit" << std::endl;
+	::exit(1);
 }
 
 void Instructions::push(eOperandType type, std::string value) 
 {
-	OperandFactory * factory = new OperandFactory();
-	factory->setStopOnError(false);
 	IOperand const * operand = factory->createOperand(type, value);
 	//std::cout << std::to_string(operand->getValue()) << std::endl;
 	stack.push_back(operand);
@@ -166,9 +161,3 @@ void Instructions::assertt(eOperandType type, std::string value)
 	} else
 		throw InstructionException("Not enough value on the stack to execute 'assert' instruction");
 } 
-
-void Instructions::setStopOnError(bool stop)
-{
-	this->_StopOnError = stop;
-	factory->setStopOnError(stop);
-}

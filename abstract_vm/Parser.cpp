@@ -17,7 +17,6 @@
 Parser::Parser()
 {
 	instructions = new Instructions();
-	_StopOnError = true;
 	return ;
 }
 
@@ -59,24 +58,31 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
-	std::ifstream infile(filename);
+	std::ifstream infile;
 	std::string line;
 	std::vector<std::string> elems;
 	int lineNbr = 0;
 
-	while (std::getline(infile, line))
-	{
-//		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
-		this->_myLinesNbr = std::to_string(lineNbr);
-		try {
- 			check_line(line);
- 		} catch (const std::exception &e) {
- 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
- 			if (_StopOnError)
- 				exit(1);
- 		}
- 		lineNbr++;
+	infile.exceptions(std::ifstream::badbit);
+	try {
+		infile.open(filename);
+
+		while (std::getline(infile, line))
+		{
+			this->_myLinesNbr = std::to_string(lineNbr);
+			try {
+	 			check_line(line);
+	 		} catch (const std::exception &e) {
+	 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
+ 				exit(1);	
+	 		}
+	 		lineNbr++;
+		}
+	} catch (const std::ifstream::failure& e) {
+		std::cout << e.what() << std::endl;
+		std::cout << strerror(errno) << std::endl;
 	}
+	std::cout << "Error: No 'exit' instruction" << std::endl;
 }
 
 void Parser::check_line(std::string line)
@@ -161,8 +167,7 @@ void Parser::check_instructions(std::string line)
 			}
 		} catch (const std::exception &e) {
 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
-			if (_StopOnError)
-				exit(1);
+			exit(1);
 		}
 	}
 }
@@ -195,14 +200,7 @@ void Parser::check_argumented_instructions(std::string line)
 		} 
 		catch(const std::exception &e) {
 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
-			if (_StopOnError)
-				exit(1);
+			exit(1);
     	} 
 	}
-}
-
-void Parser::setStopOnError(bool stop)
-{
-	this->_StopOnError = stop;
-	instructions->setStopOnError(stop);
 }

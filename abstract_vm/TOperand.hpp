@@ -142,49 +142,50 @@ public:
 		return operand;
 	}
 
-	IOperand const * operator+(IOperand const & rhs) const
+	eOperandType checkType(double value, IOperand const & rhs) const
 	{
 		eOperandType type;
 
-		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		this->_precision <= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+		if (value > myOperand[type].max || value < myOperand[type].min)
+			this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
+
+		return type;
+	}
+
+	IOperand const * operator+(IOperand const & rhs) const
+	{
+
 		double value = rhs.getValue() + this->_value;
-		IOperand * operand = createOperator(value, type);
+		IOperand * operand = createOperator(value, checkType(value, rhs));
 		return operand;
 	}
 
 	IOperand const * operator-(IOperand const & rhs) const
 	{
-		eOperandType type;
-
-		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
-		double value = this->_value - rhs.getValue();
-		IOperand * operand = createOperator(value, type);
+		double value = rhs.getValue() - this->_value;
+		IOperand * operand = createOperator(value, checkType(value, rhs));
 		return operand;
 	}
 
 	IOperand const * operator*(IOperand const & rhs) const
 	{
-		eOperandType type;
-
-		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
 		double value = rhs.getValue() * this->_value;
-		IOperand * operand = createOperator(value, type);
+		IOperand * operand = createOperator(value, checkType(value, rhs));
 		return operand;
 	}
 
 	IOperand const * operator/(IOperand const & rhs) const
 	{
 		IOperand * operand;
-		eOperandType type;
 
-		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
-		if (rhs.getValue() == 0 || this->_value == 0){
+		if (this->_value == 0){
 			std::string s = "Division using 0";
 			throw MathException(s);
 		}
 		else {
-			double value = this->_value / rhs.getValue();
-			operand = createOperator(value, type);
+			double value = rhs.getValue() / this->_value;
+			operand = createOperator(value, checkType(value, rhs));
 		}
 		return operand;
 	}
@@ -192,14 +193,12 @@ public:
 	IOperand const * operator%(IOperand const & rhs) const
 	{
 		IOperand * operand;
-		eOperandType type;
 
-		this->_precision >= rhs.getPrecision() ? type = this->_type : type = rhs.getType();
-		if (rhs.getValue() == 0)
+		if (this->_value == 0)
 			throw MathException("Modulo using 0");
 		else {
-			double value = fmod(this->_value,rhs.getValue());
-			operand = createOperator(value, type);
+			double value = fmod(rhs.getValue(), this->_value);
+			operand = createOperator(value, checkType(value, rhs));
 		}
 		return operand;
 	}
