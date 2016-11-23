@@ -131,10 +131,13 @@ void Instructions::div()
 void Instructions::print() 
 {
 	//std::cout << "print" << std::endl;
-	if (stack.back()->getType() == INT8)
-		std::cout << static_cast<char> (stack[stack.size() - 1]->getValue()) << std::endl;
-	else
-		throw InstructionException("Assert value not true while executing 'print' instruction");
+	if (stack.size() >= 1) {
+		if (stack.back()->getType() == INT8)
+			std::cout << static_cast<char> (stack[stack.size() - 1]->getValue()) << std::endl;
+		else
+			throw InstructionException("Assert value not true while executing 'print' instruction");
+	} else
+		throw InstructionException("Not enough values on the stack to execute 'print' instruction");
 }
 
 void Instructions::exit() 
@@ -153,7 +156,7 @@ void Instructions::push(eOperandType type, std::string value)
 void Instructions::assertt(eOperandType type, std::string value) 
 {
 	//std::cout << "assert " << value << std::endl;
-	if (stack.size() >= 2) {
+	if (stack.size() >= 1) {
 		const IOperand * operand = factory->createOperand(type, value);		
 		if (stack[stack.size() - 1]->getValue() != operand->getValue() || stack[stack.size() - 1]->getType() != operand->getType()) {
 			throw InstructionException("Assert value not true : type or value not equal"); 

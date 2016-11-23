@@ -13,6 +13,7 @@
 #include "Parser.hpp"
 #include "eOperandType.hpp"
 #include <regex>
+#include <boost/algorithm/string.hpp>
 
 Parser::Parser()
 {
@@ -58,14 +59,14 @@ std::vector<std::string> Parser::split(const std::string & s, char delim)
 
 void Parser::readfile(std::string filename)
 {
-	std::ifstream infile;
+	std::ifstream infile(filename);
 	std::string line;
 	std::vector<std::string> elems;
 	int lineNbr = 0;
 
-	infile.exceptions(std::ifstream::badbit);
-	try {
-		infile.open(filename);
+//	infile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+//	try {
+//		infile.open(filename);
 
 		while (std::getline(infile, line))
 		{
@@ -78,11 +79,10 @@ void Parser::readfile(std::string filename)
 	 		}
 	 		lineNbr++;
 		}
-	} catch (const std::ifstream::failure& e) {
-		std::cout << e.what() << std::endl;
-		std::cout << strerror(errno) << std::endl;
-	}
-	std::cout << "Error: No 'exit' instruction" << std::endl;
+		std::cout << "Error: No 'exit' instruction" << std::endl;
+//	} catch (const std::ifstream::failure& e) {
+//		std::cout << strerror(errno) << std::endl;
+//	}
 }
 
 void Parser::check_line(std::string line)
@@ -91,14 +91,15 @@ void Parser::check_line(std::string line)
 	std::regex comment("^([ \t]+)?;(.*?)\n?$");
 	std::regex empty("^([ \t]+)?\n?$");
 
-	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
-	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
+	std::regex standard_comment("^(pop|dump|add|sub|mul|div|mod|print|exit)([ \t]+)?;(.*?)\n?$");
+	std::regex standard_nocomment("^(pop|dump|add|sub|mul|div|mod|print|exit)([ \t]+)?$");
 
 	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
-	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
+	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]([ \t]+)?\n?)$");
 
-	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
+	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment)) {
 		check_instructions(line);
+	}
 	else if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
 		check_argumented_instructions(line);
 	else if (!std::regex_match(line, comment) && !std::regex_match(line, empty))
@@ -113,7 +114,10 @@ void Parser::check_instructions(std::string line)
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
 		try {
-			if (instructions_list[i] == line)
+			std::vector<std::string> elems = split(line, ';');
+			boost::trim(elems.at(0));
+
+			if (instructions_list[i] == elems.at(0))
 			{
 				switch (i)
 				{
@@ -128,7 +132,7 @@ void Parser::check_instructions(std::string line)
 						break ;
 					}
 					case 4:
-					{	
+					{
 						instructions->add();
 						break ;
 					}
