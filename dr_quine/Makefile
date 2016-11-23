@@ -11,10 +11,13 @@
 #******************************************************************************#
 
 CC = clang
-NAME = Colleen
+NAME = Grace
 CFLAGS = -Wall -Wextra -Werror
 OBJDIR = obj/
-SRCS = Colleen.c \
+SRCS = Grace.c \
+
+GARBAGE = Grace_kid.c
+
 
 OBJS = $(addprefix $(OBJDIR),$(subst .c,.o,$(SRCS)))
 
@@ -39,6 +42,7 @@ $(OBJDIR):
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJDIR)
+	rm -rf $(GARBAGE)
 
 fclean: clean
 	rm -rf $(NAME)
