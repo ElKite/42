@@ -33,12 +33,14 @@ public:
 
 
 	void readfile(std::string filename);
+	void readFromInput(std::vector<std::string> input);
 	void check_instructions(std::string line);
 	void check_argumented_instructions(std::string line);
 	void check_line(std::string line);
 	std::vector<std::string> split(const std::string & s, char delim);
 	std::vector<std::string> &split(const std::string & s, char delim, std::vector<std::string> &elems);
 	Parser & operator=(Parser const & src);
+
 };
 
 #endif

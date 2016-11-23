@@ -1,6 +1,1 @@
-push int8(44)
-push double(2)
-mul
-dump
-print
-exit
+

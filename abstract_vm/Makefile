@@ -6,7 +6,7 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/04 12:56:41 by vtarreau          #+#    #+#              #
-#    Updated: 2016/05/31 14:41:21 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/11/23 08:45:51 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,6 +20,8 @@ SRCS = main.cpp \
 		Parser.cpp \
 
 OBJS = $(addprefix $(OBJDIR),$(subst .cpp,.o,$(SRCS)))
+
+ABS_FILES = Log.txt
 
 .PHONY: all clean fclean re proper
 
@@ -41,6 +43,7 @@ $(OBJDIR):
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJDIR)
+	rm -rf $(ABS_FILES)
 
 fclean: clean
 	rm -rf $(NAME)
