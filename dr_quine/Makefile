@@ -9,43 +9,32 @@
 #    Updated: 2016/11/23 10:17:16 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
+NAMEA = Colleen
+NAMEB = Grace
+NAMEC = Sully
 
-CC = clang
-NAME = Grace
-CFLAGS = -Wall -Wextra -Werror
-OBJDIR = obj/
-SRCS = Grace.c \
+COMPILE = clang -Werror -Wall -Wextra -o
 
-GARBAGE = Grace_kid.c
-
-
-OBJS = $(addprefix $(OBJDIR),$(subst .c,.o,$(SRCS)))
-
+GARBAGE = Grace_kid.c \
 
 .PHONY: all clean fclean re proper
 
-all: $(NAME)
+all: compile
 
-$(NAME): $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES)
-
-$(OBJS): | $(OBJDIR)
-
-$(OBJDIR)%.o : %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
-
-$(OBJDIR):
-	@if [ ! -d "$(OBJDIR)" ]; then \
-		mkdir $(OBJDIR);\
-		fi
+compile:
+	$(COMPILE) $(NAMEA) Colleen.c
+	$(COMPILE) $(NAMEB) Grace.c
+	$(COMPILE) $(NAMEC) Sully.c
 
 clean:
-	rm -rf $(OBJS)
-	rm -rf $(OBJDIR)
+
 	rm -rf $(GARBAGE)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf Sully_*
+	rm -rf $(NAMEA)
+	rm -rf $(NAMEB)
+	rm -rf $(NAMEC)
 
 proper: all clean
 
