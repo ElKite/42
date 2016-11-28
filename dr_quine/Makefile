@@ -6,47 +6,35 @@
 #    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/04 12:56:41 by vtarreau          #+#    #+#              #
-#    Updated: 2016/11/23 08:45:51 by vtarreau         ###   ########.fr        #
+#    Updated: 2016/11/23 10:17:16 by vtarreau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
+NAMEA = Colleen
+NAMEB = Grace
+NAMEC = Sully
 
-CC = clang++
-NAME = abstract_vm
-CFLAGS = -Wall -Wextra -Werror -I /nfs/2014/v/vtarreau/.brew/include/
-OBJDIR = obj/
-SRCS = main.cpp \
-		OperandFactory.cpp \
-		Instructions.cpp \
-		Parser.cpp \
+COMPILE = clang -Werror -Wall -Wextra -o
 
-OBJS = $(addprefix $(OBJDIR),$(subst .cpp,.o,$(SRCS)))
-
-ABS_FILES = Log.txt
+GARBAGE = Grace_kid.c \
 
 .PHONY: all clean fclean re proper
 
-all: $(NAME)
+all: compile
 
-$(NAME): $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES)
-
-$(OBJS): | $(OBJDIR)
-
-$(OBJDIR)%.o : %.cpp $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
-
-$(OBJDIR):
-	@if [ ! -d "$(OBJDIR)" ]; then \
-		mkdir $(OBJDIR);\
-		fi
+compile:
+	$(COMPILE) $(NAMEA) Colleen.c
+	$(COMPILE) $(NAMEB) Grace.c
+	$(COMPILE) $(NAMEC) Sully.c
 
 clean:
-	rm -rf $(OBJS)
-	rm -rf $(OBJDIR)
-	rm -rf $(ABS_FILES)
+
+	rm -rf $(GARBAGE)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf Sully_*
+	rm -rf $(NAMEA)
+	rm -rf $(NAMEB)
+	rm -rf $(NAMEC)
 
 proper: all clean
 

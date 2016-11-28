@@ -13,11 +13,11 @@
 #include "Parser.hpp"
 #include "eOperandType.hpp"
 #include <regex>
+#include <boost/algorithm/string.hpp>
 
 Parser::Parser()
 {
 	instructions = new Instructions();
-	_StopOnError = true;
 	return ;
 }
 
@@ -62,21 +62,42 @@ void Parser::readfile(std::string filename)
 	std::ifstream infile(filename);
 	std::string line;
 	std::vector<std::string> elems;
-	int lineNbr = 0;
+	int lineNbr = 1;
 
-	while (std::getline(infile, line))
+
+		while (std::getline(infile, line))
+		{
+			this->_myLinesNbr = std::to_string(lineNbr);
+			try {
+	 			check_line(line);
+	 		} catch (const std::exception &e) {
+	 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
+				exit(1);	
+	 		}
+	 		lineNbr++;
+		}
+		std::cout << "Error: No 'exit' instruction" << std::endl;
+}
+
+void Parser::readFromInput(std::vector<std::string> input)
+{
+	std::string line;
+	unsigned long i = 0;
+
+	while (i <= input.size() - 1)
 	{
-//		std::cout << "LINE " << lineNbr << " : " << line << std::endl;
-		this->_myLinesNbr = std::to_string(lineNbr);
+		this->_myLinesNbr = std::to_string(i + 1);
+		line = input.at(i); 
 		try {
  			check_line(line);
  		} catch (const std::exception &e) {
- 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
- 			if (_StopOnError)
- 				exit(1);
+ 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
+			exit(1);	
  		}
- 		lineNbr++;
+ 		i++;
 	}
+		std::cout << "Error: No 'exit' instruction" << std::endl;
+
 }
 
 void Parser::check_line(std::string line)
@@ -85,14 +106,15 @@ void Parser::check_line(std::string line)
 	std::regex comment("^([ \t]+)?;(.*?)\n?$");
 	std::regex empty("^([ \t]+)?\n?$");
 
-	std::regex standard_comment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}(?=;)");
-	std::regex standard_nocomment("^((pop)|(dump)|(add)|(sub)|(mul)|(div)|(mod)|(print)|(exit)){1}$");
+	std::regex standard_comment("^(pop|dump|add|sub|mul|div|mod|print|exit)([ \t]+)?;(.*?)\n?$");
+	std::regex standard_nocomment("^(pop|dump|add|sub|mul|div|mod|print|exit)([ \t]+)?$");
 
 	std::regex withValue_comment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)])([ \t]+)?(?=;)(.*?)\n?$");
-	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]\n?)$");
+	std::regex withValue_nocomment("^((push|assert)[ \t]+(int8\\(|int16\\(|int32\\(|float\\(|double\\()[-+]?[0-9]*\\.?[0-9]+[)]([ \t]+)?\n?)$");
 
-	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment))
+	if (std::regex_match(line, standard_comment) || std::regex_match(line, standard_nocomment)) {
 		check_instructions(line);
+	}
 	else if (std::regex_match(line, withValue_nocomment)  || std::regex_match(line, withValue_comment))
 		check_argumented_instructions(line);
 	else if (!std::regex_match(line, comment) && !std::regex_match(line, empty))
@@ -107,7 +129,10 @@ void Parser::check_instructions(std::string line)
 	for (size_t i = 0; i < INSTRUCTIONS_COUNT; i++) 
 	{
 		try {
-			if (instructions_list[i] == line)
+			std::vector<std::string> elems = split(line, ';');
+			boost::trim(elems.at(0));
+
+			if (instructions_list[i] == elems.at(0))
 			{
 				switch (i)
 				{
@@ -122,7 +147,7 @@ void Parser::check_instructions(std::string line)
 						break ;
 					}
 					case 4:
-					{	
+					{
 						instructions->add();
 						break ;
 					}
@@ -161,8 +186,7 @@ void Parser::check_instructions(std::string line)
 			}
 		} catch (const std::exception &e) {
 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
-			if (_StopOnError)
-				exit(1);
+			exit(1);
 		}
 	}
 }
@@ -195,14 +219,7 @@ void Parser::check_argumented_instructions(std::string line)
 		} 
 		catch(const std::exception &e) {
 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;
-			if (_StopOnError)
-				exit(1);
+			exit(1);
     	} 
 	}
-}
-
-void Parser::setStopOnError(bool stop)
-{
-	this->_StopOnError = stop;
-	instructions->setStopOnError(stop);
 }
