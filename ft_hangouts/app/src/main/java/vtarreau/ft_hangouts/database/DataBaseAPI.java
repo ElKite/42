@@ -101,4 +101,18 @@ public class DataBaseAPI {
         }
     }
 
+    public Contact getAContactID(int id) {
+        if (db == null)
+            return null;
+        Cursor c = db.rawQuery("SELECT * FROM " + DataBaseHelper.ContactTable + " WHERE " +
+                DataBaseHelper.contact_id + " = " + id, null);
+        if (c.getCount() == 0) {
+            c.close();
+            return null;
+        } else {
+            Contact contact = new Contact(c);
+            return contact;
+        }
+    }
+
 }

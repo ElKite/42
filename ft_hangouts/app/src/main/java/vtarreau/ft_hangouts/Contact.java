@@ -16,6 +16,7 @@ public class Contact {
     private String phone;
     private String address;
     private String mail;
+    private int id;
 
     public Contact(String firstname, String lastname, String mobile, String phone, String address,
                    String mail) {
@@ -34,6 +35,7 @@ public class Contact {
         this.phone = c.getString(DataBaseHelper.phone_col);
         this.address = c.getString(DataBaseHelper.address_col);
         this.mail = c.getString(DataBaseHelper.mail_col);
+        this.id = c.getInt(DataBaseHelper.id_col);
     }
 
     public void setFirstname(String firstname) {
@@ -60,6 +62,10 @@ public class Contact {
         this.mail = mail;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -83,4 +89,9 @@ public class Contact {
     public String getMail() {
         return mail;
     }
+
+    public int getId() {
+        return id;
+    }
 }
+
