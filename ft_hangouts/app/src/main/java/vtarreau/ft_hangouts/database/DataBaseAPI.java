@@ -105,11 +105,12 @@ public class DataBaseAPI {
         if (db == null)
             return null;
         Cursor c = db.rawQuery("SELECT * FROM " + DataBaseHelper.ContactTable + " WHERE " +
-                DataBaseHelper.contact_id + " = " + id, null);
+                DataBaseHelper.contact_id + " = " + String.valueOf(id), null);
         if (c.getCount() == 0) {
             c.close();
             return null;
         } else {
+            c.moveToFirst();
             Contact contact = new Contact(c);
             return contact;
         }

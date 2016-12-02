@@ -1,14 +1,19 @@
 package vtarreau.ft_hangouts.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        db = new DataBaseAPI(this);
+        contactList = (ListView) findViewById(R.id.contactList);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,11 +50,51 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        db = new DataBaseAPI(this);
-        contactList = (ListView) findViewById(R.id.contactList);
 
-        getAllContacts();
-        displayContacts();
+        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, ContactActivity.class);
+                intent.putExtra(AddContactActivity.ID_TO_EDIT, String.valueOf(contacts.get(i).getId()));
+                startActivity(intent);
+            }
+        });
+
+        contactList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                ListView listOptions = new ListView(MainActivity.this);
+                final int contactposition = i;
+                String[] options = new String[] {"Edit Contact", "Delete Contact"};
+                ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
+                        (MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, options);
+                listOptions.setAdapter(listAdapter);
+                builder.setView(listOptions);
+                final Dialog dialog = builder.create();
+
+                listOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (i == 0) {
+                            Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
+                            dialog.dismiss();
+                            intent.putExtra(AddContactActivity.ID_TO_EDIT, String.valueOf(contacts.get(contactposition).getId()));
+                            startActivity(intent);
+                        } else if (i == 1) {
+                            db.openForWrite();
+                            db.removeContact(contacts.get(contactposition).getId());
+                            db.close();
+                            dialog.dismiss();
+                            getAllContacts();
+                            displayContacts();
+                        }
+                    }
+                });
+                dialog.show();
+                return true;
+            }
+        });
     }
 
     public void displayContacts() {
@@ -61,8 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 adapter = new ContactListAdapter(this, contacts);
                 contactList.setAdapter(adapter);
             }
-        } else
-            Toast.makeText(this, "Pas de contact...", Toast.LENGTH_LONG).show();
+        } else {
+            if (adapter == null)
+                Toast.makeText(this, "Pas de contact...", Toast.LENGTH_LONG).show();
+            else
+                adapter.clear();
+        }
     }
 
     public void getAllContacts() {
@@ -86,5 +139,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        getAllContacts();
+        displayContacts();
+        super.onResume();
     }
 }

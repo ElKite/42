@@ -3,6 +3,7 @@ package vtarreau.ft_hangouts.activities;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,8 +46,8 @@ public class AddContactActivity extends AppCompatActivity {
 
         db = new DataBaseAPI(this);
 
-        id = getIntent().getStringExtra(ID_TO_EDIT);
-        if (id == null) {
+        getIntent().getStringExtra(ID_TO_EDIT);
+        if (getIntent().getStringExtra(ID_TO_EDIT) == null) {
             createContact();
         } else
             editContact();
@@ -57,7 +58,8 @@ public class AddContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (Firstname.getText().equals(""))
+                Log.e("TEST", Firstname.getText().toString());
+                if (Firstname.getText().length() == 0)
                     Toast.makeText(getApplicationContext(), "You need at least a first name to create a contact", Toast.LENGTH_LONG).show();
                 else {
                     Contact contact = new Contact(
@@ -68,13 +70,44 @@ public class AddContactActivity extends AppCompatActivity {
                     db.openForWrite();
                     db.insertContact(contact);
                     db.close();
+                    finish();
                 }
             }
         });
     }
 
     private void editContact() {
+        Contact contact;
+
+        id = Integer.parseInt(getIntent().getStringExtra(ID_TO_EDIT));
         db.openForRead();
-        db.getAContactID(id)
+        contact = db.getAContactID(id);
+        db.close();
+        Firstname.setText(contact.getFirstname());
+        Lastname.setText(contact.getLastname());
+        Mobile.setText(contact.getMobile());
+        Phone.setText(contact.getPhone());
+        Address.setText(contact.getAddress());
+        Email.setText(contact.getMail());
+
+        Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Firstname.getText().length() == 0)
+                    Toast.makeText(getApplicationContext(), "A contact at least need a firstname", Toast.LENGTH_LONG).show();
+                else {
+                    Contact contact = new Contact(
+                            Firstname.getText().toString(), Lastname.getText().toString(),
+                            Mobile.getText().toString(), Phone.getText().toString(),
+                            Address.getText().toString(), Email.getText().toString()
+                    );
+                    db.openForWrite();
+                    db.updateContact(contact, id);
+                    db.close();
+                    finish();
+                }
+            }
+        });
     }
 }
