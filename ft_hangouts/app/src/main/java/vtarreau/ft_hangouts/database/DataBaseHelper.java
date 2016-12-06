@@ -34,14 +34,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final int address_col = 6;
 
 
-    private static final String createContactTable = " CREATE TABLE " + ContactTable + " (" +
-            contact_id + " INTEGER PRIMARY KEY AUTOINCREMEMENT, " +
+    private static final String createContactTable = "CREATE TABLE " + ContactTable + " (" +
+            contact_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             contact_firstname + " TEXT NOT NULL, " +
             contact_lastname + " TEXT NOT NULL, " +
             contact_mobile + " TEXT NOT NULL, " +
             contact_phone + " TEXT NOT NULL, " +
             contact_mail + " TEXT NOT NULL, " +
-            contact_address + " TEXT NOT NULL, " + ");";
+            contact_address + " TEXT NOT NULL " + ");";
 
     private DataBaseHelper (Context context) {
         super(context, DB__FILE_NAME, null, VERSION);
@@ -49,7 +49,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        db.execSQL(createContactTable);
+        sqLiteDatabase.execSQL(createContactTable);
     }
 
     @Override
