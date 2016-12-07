@@ -85,7 +85,7 @@ public class AddContactActivity extends AppCompatActivity {
         db.close();
         Firstname.setText(contact.getFirstname());
         Lastname.setText(contact.getLastname());
-        Mobile.setText(contact.getMobile());
+        Mobile.setText(contact.getMobile().substring(0));
         Phone.setText(contact.getPhone());
         Address.setText(contact.getAddress());
         Email.setText(contact.getMail());
