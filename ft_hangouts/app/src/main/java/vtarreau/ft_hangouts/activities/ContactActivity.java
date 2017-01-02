@@ -1,11 +1,17 @@
 package vtarreau.ft_hangouts.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import vtarreau.ft_hangouts.Contact;
@@ -30,6 +36,8 @@ public class ContactActivity extends AppCompatActivity {
     ImageButton sms;
     ImageButton edit;
     ImageButton mail;
+
+    Contact contact;
     DataBaseAPI db;
     int id;
 
@@ -58,6 +66,8 @@ public class ContactActivity extends AppCompatActivity {
         id = Integer.parseInt(getIntent().getStringExtra(ID_TO_EDIT));
 
 
+        refreshdata();
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,11 +76,58 @@ public class ContactActivity extends AppCompatActivity {
                 startActivityForResult(intent, RESULT_CANCELED);
             }
         });
-        refreshdata();
+        sms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        mail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (contact.getPhone().length() > 0 && contact.getMobile().length() > 0) {
+
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(ContactActivity.this);
+                    ListView listOptions = new ListView(ContactActivity.this);
+                    String[] options = new String[] {"Mobile", "Phone"};
+                    ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
+                            (ContactActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, options);
+                    listOptions.setAdapter(listAdapter);
+                    builder.setView(listOptions);
+                    final Dialog dialog = builder.create();
+
+                    listOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (i == 0) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getMobile()));
+                                startActivity(intent);
+                            } else if (i == 1) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhone()));
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    dialog.show();
+
+                } else if (contact.getPhone().length() > 0 && contact.getMobile().length() == 0) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhone()));
+                    startActivity(intent);
+                } else if (contact.getPhone().length() == 0 && contact.getMobile().length() > 0) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getMobile()));
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void refreshdata() {
-        Contact contact;
 
         db.openForRead();
         contact = db.getAContactID(id);
