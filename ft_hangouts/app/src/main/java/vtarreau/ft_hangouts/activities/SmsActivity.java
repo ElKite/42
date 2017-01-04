@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class SmsActivity extends AppCompatActivity {
     ListView sms_list;
 
     ArrayList<String> inbox;
-    ArrayList<String> sent;
+    ArrayList<String> smsFrom;
     String ContactPhoneNumber;
     String ContactName;
 
@@ -49,7 +50,7 @@ public class SmsActivity extends AppCompatActivity {
         sms_list = (ListView) findViewById(R.id.sms_list);
 
         inbox = new ArrayList<>();
-        sent = new ArrayList<>();
+        smsFrom = new ArrayList<>();
 
         ContactPhoneNumber = getIntent().getStringExtra(ContactActivity.CONTACT_NUMBER).substring(1);
         ContactPhoneNumber = "+33" + ContactPhoneNumber;
@@ -66,41 +67,33 @@ public class SmsActivity extends AppCompatActivity {
     private void refreshdata() {
 
         retrieveInbox();
-        retrieveSentSms();
 
         if (adapter == null) {
-            adapter = new SmsListAdapter(SmsActivity.this, sent, inbox, ContactName);
+            adapter = new SmsListAdapter(SmsActivity.this, inbox, smsFrom);
             sms_list.setAdapter(adapter);
         }
         //fetch sent + inbox, sort by date
     }
 
     private void retrieveInbox() {
-        Uri mSmsinboxQueryUri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(mSmsinboxQueryUri,new String[] { "_id", "thread_id", "address", "person", "date","body", "type" }, null, null, "normalized_date desc");
+        Uri mSmsinboxQueryUri = Uri.parse("content://sms/");
+        Cursor c = getContentResolver().query(mSmsinboxQueryUri,new String[] { "_id", "thread_id", "address", "person", "date","body", "type" }, null, null, null);
         startManagingCursor(c);
             if (c.moveToFirst()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String address = c.getString(c.getColumnIndex("address"));
-                    if (address.equalsIgnoreCase(ContactPhoneNumber))
+                    Log.e(address, c.getString(c.getColumnIndex("person")) + " | " + c.getString(c.getColumnIndex("type")) + " | " + c.getString(c.getColumnIndex("_id")));
+                    if (address.equalsIgnoreCase(ContactPhoneNumber)) {
                         inbox.add(c.getString(c.getColumnIndex("body")).toString());
+                        if (c.getString(c.getColumnIndex("type")) == "2")
+                            smsFrom.add("Me");
+                        else
+                            smsFrom.add(address);
+
+                    }
                     c.moveToNext();
                 }
             }
             c.close();
     }
-
-    private void retrieveSentSms() {
-        Uri mSmsinboxQueryUri = Uri.parse("content://sms/sent");
-        Cursor c = getContentResolver().query(mSmsinboxQueryUri,new String[] { "_id", "thread_id", "address", "person", "date","body", "type" }, "address = '" + ContactPhoneNumber + "'", null, "normalized_date desc");
-        startManagingCursor(c);
-            if (c.moveToFirst()) {
-                for (int i = 0; i < c.getCount(); i++) {
-                    inbox.add(c.getString(c.getColumnIndex("body")).toString());
-                    c.moveToNext();
-                }
-            }
-            c.close();
-    }
-
 }

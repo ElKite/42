@@ -20,13 +20,16 @@ import vtarreau.ft_hangouts.R;
 
 public class SmsListAdapter extends ArrayAdapter<String> {
 
+    ArrayList<String> smsFrom;
+
     private static class ViewHolder {
         private TextView sms_text;
         private TextView sms_sender;
     }
 
-    public SmsListAdapter(Context context, ArrayList<String> sent, ArrayList<String> inbox, String name) {
-        super(context, R.layout.content_sms, );
+    public SmsListAdapter(Context context, ArrayList<String> inbox, ArrayList<String> smsFrom) {
+        super(context, R.layout.content_sms, inbox);
+        this.smsFrom = smsFrom;
     }
 
     @NonNull
@@ -46,7 +49,7 @@ public class SmsListAdapter extends ArrayAdapter<String> {
         //position pair background gris sinon blanc
         if (getItem(position) != null) {
             viewHolder.sms_text.setText(getItem(position).toString());
-            viewHolder.sms_sender.setText("TOTO");
+            viewHolder.sms_sender.setText(smsFrom.get(position));
         }
         return convertView;
     }
