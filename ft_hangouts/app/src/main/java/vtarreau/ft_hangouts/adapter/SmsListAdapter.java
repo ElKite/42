@@ -25,8 +25,8 @@ public class SmsListAdapter extends ArrayAdapter<String> {
         private TextView sms_sender;
     }
 
-    public SmsListAdapter(Context context, ArrayList<String> msg) {
-        super(context, R.layout.content_sms, msg);
+    public SmsListAdapter(Context context, ArrayList<String> sent, ArrayList<String> inbox, String name) {
+        super(context, R.layout.content_sms, );
     }
 
     @NonNull

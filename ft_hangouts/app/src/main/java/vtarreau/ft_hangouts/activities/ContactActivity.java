@@ -25,6 +25,7 @@ import vtarreau.ft_hangouts.database.DataBaseAPI;
 
 public class ContactActivity extends AppCompatActivity {
     final public static String ID_TO_EDIT = "ID_TO_EDIT";
+    final public static String CONTACT_NUMBER = "CONTACT_NUMBER";
 
     TextView Firstname;
     TextView Lastname;
@@ -119,7 +120,7 @@ public class ContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContactActivity.this, SmsActivity.class);
-                intent.putExtra("ID_TO_READ", contact.getId());
+                intent.putExtra(CONTACT_NUMBER, contact.getMobile());
                 startActivity(intent);
             }
         });
