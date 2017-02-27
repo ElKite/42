@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ft_hangouts</string>
+    <string name="action_settings">Changer de couleur</string>
+
+    <string name="me">Moi</string>
+
+
+    <string name="first_name">Prenom</string>
+    <string name="last_name">Nom</string>
+    <string name="mobile">Portable</string>
+    <string name="phone">Maison</string>
+    <string name="address">Adresse</string>
+    <string name="email">Email</string>
+    <string name="save">Enregistrer</string>
+
+    <string name="edit_contact">Modifier Contact</string>
+    <string name="delete_contact">Supprimer Contact</string>
+</resources>

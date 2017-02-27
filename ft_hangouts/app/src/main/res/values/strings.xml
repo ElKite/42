@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">ft_hangouts</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Switch Color</string>
+
+    <string name="me">Me</string>
+
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="mobile">Mobile</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="save">Save</string>
+
+    <string name="edit_contact">Edit Contact</string>
+    <string name="delete_contact">Delete Contact</string>
+
 </resources>

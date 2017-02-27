@@ -64,18 +64,20 @@ void Parser::readfile(std::string filename)
 	std::vector<std::string> elems;
 	int lineNbr = 1;
 
-
-		while (std::getline(infile, line))
-		{
-			this->_myLinesNbr = std::to_string(lineNbr);
-			try {
-	 			check_line(line);
-	 		} catch (const std::exception &e) {
-	 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
-				exit(1);	
-	 		}
-	 		lineNbr++;
-		}
+	while (std::getline(infile, line))
+	{
+		this->_myLinesNbr = std::to_string(lineNbr);
+		try {
+ 			check_line(line);
+ 		} catch (const std::exception &e) {
+ 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
+			exit(1);	
+ 		}
+ 		lineNbr++;
+	}
+	if (infile.fail())
+		std::cout << "Error: An error occured while reading the file" << std::endl;
+	else
 		std::cout << "Error: No 'exit' instruction" << std::endl;
 }
 
@@ -84,20 +86,23 @@ void Parser::readFromInput(std::vector<std::string> input)
 	std::string line;
 	unsigned long i = 0;
 
-	while (i <= input.size() - 1)
-	{
-		this->_myLinesNbr = std::to_string(i + 1);
-		line = input.at(i); 
-		try {
- 			check_line(line);
- 		} catch (const std::exception &e) {
- 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
-			exit(1);	
- 		}
- 		i++;
-	}
+	if (input.size() == 0) {
 		std::cout << "Error: No 'exit' instruction" << std::endl;
-
+	} else {
+		while (i <= input.size() - 1)
+		{
+			this->_myLinesNbr = std::to_string(i + 1);
+			line = input.at(i); 
+			try {
+	 			check_line(line);
+	 		} catch (const std::exception &e) {
+	 			std::cout << "Line " << this->_myLinesNbr << ": " << e.what() << std::endl;	
+				exit(1);	
+	 		}
+	 		i++;
+		}
+		std::cout << "Error: No 'exit' instruction" << std::endl;
+	}
 }
 
 void Parser::check_line(std::string line)

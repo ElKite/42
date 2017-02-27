@@ -23,7 +23,6 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
     private static class ViewHolder {
         private TextView firstNameView;
         private TextView lastNameView;
-        private ImageView photoView;
     }
 
     public ContactListAdapter(Context context, ArrayList<Contact> contacts) {
@@ -40,7 +39,6 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
             viewHolder = new ViewHolder();
             viewHolder.firstNameView = (TextView) convertView.findViewById(R.id.firstname);
             viewHolder.lastNameView = (TextView) convertView.findViewById(R.id.lastname);
-            viewHolder.photoView = (ImageView) convertView.findViewById(R.id.photo);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -48,7 +46,6 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
         Contact contact = getItem(position);
         viewHolder.firstNameView.setText(contact.getFirstname());
         viewHolder.lastNameView.setText(contact.getLastname());
-        viewHolder.photoView.setImageResource(android.R.drawable.picture_frame);
         return convertView;
     }
 }

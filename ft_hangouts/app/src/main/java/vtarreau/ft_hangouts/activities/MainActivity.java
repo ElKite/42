@@ -4,14 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,7 +19,7 @@ import vtarreau.ft_hangouts.R;
 import vtarreau.ft_hangouts.adapter.ContactListAdapter;
 import vtarreau.ft_hangouts.database.DataBaseAPI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MyActivity {
 
     DataBaseAPI db;
     ContactListAdapter adapter;
@@ -33,10 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setToolbar();
 
         db = new DataBaseAPI(this);
         contactList = (ListView) findViewById(R.id.contactList);
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 ListView listOptions = new ListView(MainActivity.this);
                 final int contactposition = i;
-                String[] options = new String[] {"Edit Contact", "Delete Contact"};
+                String[] options = new String[] {getResources().getString(R.string.edit_contact), getResources().getString(R.string.delete_contact)};
                 ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
                         (MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, options);
                 listOptions.setAdapter(listAdapter);
@@ -128,17 +124,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

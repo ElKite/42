@@ -1,11 +1,19 @@
 package vtarreau.ft_hangouts.activities;
 
+import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import vtarreau.ft_hangouts.Contact;
 import vtarreau.ft_hangouts.R;
@@ -22,8 +31,9 @@ import vtarreau.ft_hangouts.database.DataBaseAPI;
  * Created by Vincent on 02/12/2016.
  */
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends MyActivity {
     final public static String ID_TO_EDIT = "ID_TO_EDIT";
+    final public static String CONTACT_NUMBER = "CONTACT_NUMBER";
 
     TextView Firstname;
     TextView Lastname;
@@ -45,6 +55,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+        setToolbar();
 
         Firstname = (TextView) findViewById(R.id.contact_firstname);
         Lastname = (TextView) findViewById(R.id.contact_lastname);
@@ -59,12 +70,10 @@ public class ContactActivity extends AppCompatActivity {
         mail = (ImageButton) findViewById(R.id.email);
 
 
-
         db = new DataBaseAPI(this);
 
         getIntent().getStringExtra(ID_TO_EDIT);
         id = Integer.parseInt(getIntent().getStringExtra(ID_TO_EDIT));
-
 
         refreshdata();
 
@@ -76,26 +85,38 @@ public class ContactActivity extends AppCompatActivity {
                 startActivityForResult(intent, RESULT_CANCELED);
             }
         });
+
         sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(ContactActivity.this, SmsActivity.class);
+                intent.putExtra(CONTACT_NUMBER, contact.getMobile());
+                startActivity(intent);
             }
         });
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{contact.getMail()});
+                i.putExtra(Intent.EXTRA_SUBJECT, "");
+                i.putExtra(Intent.EXTRA_TEXT   , "");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(ContactActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contact.getPhone().length() > 0 && contact.getMobile().length() > 0) {
 
+                if (contact.getPhone().length() > 0 && contact.getMobile().length() > 0) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(ContactActivity.this);
                     ListView listOptions = new ListView(ContactActivity.this);
-                    String[] options = new String[] {"Mobile", "Phone"};
+                    String[] options = new String[]{"Mobile", "Phone"};
                     ArrayAdapter<String> listAdapter = new ArrayAdapter<String>
                             (ContactActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, options);
                     listOptions.setAdapter(listAdapter);
@@ -119,7 +140,7 @@ public class ContactActivity extends AppCompatActivity {
                 } else if (contact.getPhone().length() > 0 && contact.getMobile().length() == 0) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhone()));
                     startActivity(intent);
-                } else if (contact.getPhone().length() == 0 && contact.getMobile().length() > 0) {
+                } else if (contact.getMobile().length() > 0 && contact.getPhone().length() == 0) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getMobile()));
                     startActivity(intent);
                 }
@@ -128,7 +149,6 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void refreshdata() {
-
         db.openForRead();
         contact = db.getAContactID(id);
         db.close();
@@ -146,7 +166,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == RESULT_CANCELED) {
-            refreshdata(); // your "refresh" code
+            refreshdata();
         }
     }
 }

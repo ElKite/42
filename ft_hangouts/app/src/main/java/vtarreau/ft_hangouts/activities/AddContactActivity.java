@@ -1,9 +1,15 @@
 package vtarreau.ft_hangouts.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +23,7 @@ import vtarreau.ft_hangouts.database.DataBaseAPI;
  * Created by Vincent on 29/11/2016.
  */
 
-public class AddContactActivity extends AppCompatActivity {
+public class AddContactActivity extends MyActivity {
 
     final public static String ID_TO_EDIT = "ID_TO_EDIT";
 
@@ -35,6 +41,7 @@ public class AddContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addcontact);
+        setToolbar();
 
         Firstname = (EditText) findViewById(R.id.firstNameAdd);
         Lastname = (EditText) findViewById(R.id.LastNameAdd);
@@ -85,7 +92,7 @@ public class AddContactActivity extends AppCompatActivity {
         db.close();
         Firstname.setText(contact.getFirstname());
         Lastname.setText(contact.getLastname());
-        Mobile.setText(contact.getMobile());
+        Mobile.setText(contact.getMobile().substring(0));
         Phone.setText(contact.getPhone());
         Address.setText(contact.getAddress());
         Email.setText(contact.getMail());
